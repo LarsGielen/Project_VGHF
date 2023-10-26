@@ -84,5 +84,3 @@ Deze klasse houd informatie bij over de logboeken van bezoekers in musea. Het he
 
 ### Visitor:
 Dit is de klasse die bezoekers vertegenwoordigt. Bezoekers hebben een unieke id, naam, telefoonnummer, e-mailadres en adres. De relatie "VisitorLog * <--> 1 Visitor" geeft aan dat elk bezoekerslog is gekoppeld aan een specifieke bezoeker.
-
-//
