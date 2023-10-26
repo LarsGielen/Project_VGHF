@@ -19,7 +19,7 @@ classDiagram
         platformid : INT
         series : TEXT
         releaseDate : TEXT
-        museumID : INT
+        museumid : INT
     }
 
     class ItemType {
