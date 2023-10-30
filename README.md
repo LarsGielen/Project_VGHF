@@ -3,13 +3,12 @@
 ``` mermaid
 classDiagram
 
-    Item "*" <--> "1" ItemType
-    Item "*" <--> "1" Platform
-    Item "*" <--> "1" Location
-    Item "*" <--> "*" Publisher
-    Location "1" <--> "*" VisitorLog
-    VisitorLog "*" <--> "1" Visitor
-    Location "*" <--> "1" LocationType
+    Item "*" --> "1" ItemType
+    Item "*" --> "1" Platform
+    Item "*" --> "1" Museum
+    Item "*" --> "*" Publisher
+    Museum "1" --> "*" VisitorLog
+    VisitorLog "*" --> "1" Visitor
 
     class Item {
         id : INT
@@ -42,17 +41,11 @@ classDiagram
         website : TEXT
     }
     
-    class Location {
+    class Museum {
         id : INT
-        locationid : INT
         location : TEXT
     }
     
-    class LocationType {
-        id : INT
-        name : TEXT
-    }
-
     class VisitorLog {
         museumid : INT
         visitorid : INT
