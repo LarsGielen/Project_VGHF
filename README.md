@@ -5,10 +5,11 @@ classDiagram
 
     Item "*" --> "1" ItemType
     Item "*" --> "1" Platform
-    Item "*" --> "1" Museum
+    Item "*" --> "1" Location
     Item "*" --> "*" Publisher
-    Museum "1" --> "*" VisitorLog
+    Location "1" --> "*" VisitorLog
     VisitorLog "*" --> "1" Visitor
+    Location "*" --> "1" LocationType
 
     class Item {
         id : INT
@@ -41,11 +42,17 @@ classDiagram
         website : TEXT
     }
     
-    class Museum {
+    class Location {
         id : INT
+        locationid : INT
         location : TEXT
     }
     
+    class LocationType {
+        id : INT
+        name : TEXT
+    }
+
     class VisitorLog {
         museumid : INT
         visitorid : INT
@@ -59,7 +66,7 @@ classDiagram
         phone : TEXT
         email : TEXT
         address : TEXT
-    }    
+    }       
  ```
 ### Doel:
 Het doel van het Public Education project is om in pop-up musea verschillende video games en video games gerelareede items tentoon te stellen. De database moet dienen als ondersteuning door de inventaris, classificatie en distributie van items in musea te beheren, evenals het bijhouden van bezoekersinformatie.

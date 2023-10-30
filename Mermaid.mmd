@@ -2,10 +2,11 @@ classDiagram
 
     Item "*" --> "1" ItemType
     Item "*" --> "1" Platform
-    Item "*" --> "1" Museum
+    Item "*" --> "1" Location
     Item "*" --> "*" Publisher
-    Museum "1" --> "*" VisitorLog
+    Location "1" --> "*" VisitorLog
     VisitorLog "*" --> "1" Visitor
+    Location "*" --> "1" LocationType
 
     class Item {
         id : INT
@@ -38,11 +39,17 @@ classDiagram
         website : TEXT
     }
     
-    class Museum {
+    class Location {
         id : INT
+        locationid : INT
         location : TEXT
     }
     
+    class LocationType {
+        id : INT
+        name : TEXT
+    }
+
     class VisitorLog {
         museumid : INT
         visitorid : INT
