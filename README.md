@@ -3,13 +3,13 @@
 ``` mermaid
 classDiagram
 
-    Item "0..*" <--> "1" ItemType
-    Item "0..*" <--> "0..1" Platform
-    Item "0..*" <--> "1..*" Publisher
-    Item "0..*" <--> "1" Location
-    VisitorLog "0..*" <--> "1" Location
-    VisitorLog "0..*" <--> "1" Visitor
-    Location "0..*" <--> "1" LocationType
+    Item "0..*" --> "1" ItemType
+    Item "0..*" --> "0..1" Platform
+    Item "0..*" --> "1..*" Publisher
+    Item "0..*" --> "1" Location
+    VisitorLog "0..*" <-- "1" Location
+    VisitorLog "0..*" --> "1" Visitor
+    Location "0..*" --> "1" LocationType
 
     class Item {
         id : INT
