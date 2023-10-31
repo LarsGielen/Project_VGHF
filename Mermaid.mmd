@@ -1,12 +1,12 @@
 classDiagram
 
-    Item "*" --> "1" ItemType
-    Item "*" --> "1" Platform
-    Item "*" --> "1" Location
-    Item "*" --> "*" Publisher
-    Location "1" --> "*" VisitorLog
-    VisitorLog "*" --> "1" Visitor
-    Location "*" --> "1" LocationType
+    Item "0..*" --> "1" ItemType
+    Item "0..*" --> "0..1" Platform
+    Item "0..*" --> "1..*" Publisher
+    Item "0..*" --> "1" Location
+    VisitorLog "0..*" <-- "1" Location
+    VisitorLog "0..*" --> "1" Visitor
+    Location "0..*" --> "1" LocationType
 
     class Item {
         id : INT
@@ -17,7 +17,7 @@ classDiagram
         platformid : INT
         series : TEXT
         releaseDate : TEXT
-        museumID : INT
+        locationid : INT
     }
 
     class ItemType {
@@ -41,8 +41,9 @@ classDiagram
     
     class Location {
         id : INT
-        locationid : INT
-        location : TEXT
+        locationType : INT
+        locationName : TEXT
+        address : TEXT
     }
     
     class LocationType {
@@ -51,7 +52,7 @@ classDiagram
     }
 
     class VisitorLog {
-        museumid : INT
+        locationid : INT
         visitorid : INT
         date : TEXT
         donation : INT
@@ -63,4 +64,4 @@ classDiagram
         phone : TEXT
         email : TEXT
         address : TEXT
-    }    
+    } 
