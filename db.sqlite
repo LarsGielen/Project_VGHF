@@ -1,0 +1,63 @@
+CREATE TABLE ItemType (
+    id INT PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT NOT NULL
+);
+
+CREATE TABLE Platform (
+    id INT PRIMARY KEY AUTOINCREMENT NOT NULL, 
+    name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    releaseDate NUMERIC NOT NULL
+);
+
+CREATE TABLE Publisher (
+    id INT PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT NOT NULL,
+    description TEXT NOT NULL,
+    website TEXT
+);
+
+CREATE TABLE LocationType (
+    id INT PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT NOT NULL
+);
+
+CREATE TABLE Location (
+    id INT PRIMARY KEY AUTOINCREMENT NOT NULL,
+    locationType INT NOT NULL,
+    locationName TEXT NOT NULL,
+    address TEXT NOT NULL,
+    FOREIGN KEY (locationType) REFERENCES LocationType(id)
+);
+
+CREATE TABLE Visitor (
+    id INT PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    email TEXT NOT NULL,
+    address TEXT NOT NULL
+);
+
+CREATE TABLE Item (
+    id INT PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT NOT NULL,
+    price REAL NOT NULL,
+    description TEXT NOT NULL,
+    typeid INT NOT NULL,
+    platformid INT,
+    series TEXT NOT NULL,
+    releaseDate NUMERIC NOT NULL,
+    locationid INT NOT NULL,
+    FOREIGN KEY (typeid) REFERENCES ItemType(id),
+    FOREIGN KEY (platformid) REFERENCES Platform(id),
+    FOREIGN KEY (locationid) REFERENCES Location(id)
+);
+
+CREATE TABLE VisitorLog (
+    locationid INT NOT NULL,
+    visitorid INT NOT NULL,
+    date NUMERIC NOT NULL,
+    donation REAL,
+    FOREIGN KEY (locationid) REFERENCES Location(id),
+    FOREIGN KEY (visitorid) REFERENCES Visitor(id)
+);
