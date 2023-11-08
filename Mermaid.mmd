@@ -11,12 +11,12 @@ classDiagram
     class Item {
         id : INT
         name : TEXT
-        price : INT
+        price : REAL
         discription : TEXT
         typeid : INT
         platformid : INT
         series : TEXT
-        releaseDate : TEXT
+        releaseDate : NUMERIC
         locationid : INT
     }
 
@@ -29,7 +29,7 @@ classDiagram
         id : INT
         name : TEXT
         discription : TEXT
-        releaseDate : TEXT
+        releaseDate : NUMERIC
     }
     
     class Publisher {
@@ -54,8 +54,8 @@ classDiagram
     class VisitorLog {
         locationid : INT
         visitorid : INT
-        date : TEXT
-        donation : INT
+        date : NUMERIC
+        donation : REAL
     }
     
     class Visitor {
