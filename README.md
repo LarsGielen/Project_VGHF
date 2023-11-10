@@ -7,6 +7,7 @@ classDiagram
     Item "0..*" --> "0..1" Platform
     Item "0..*" --> "1..*" Publisher
     Item "0..*" --> "1" Location
+    Item "0..*" --> "1..*" Genre
     VisitorLog "0..*" <-- "1" Location
     VisitorLog "0..*" --> "1" Visitor
     Location "0..*" --> "1" LocationType
@@ -14,12 +15,13 @@ classDiagram
     class Item {
         id : INT
         name : TEXT
-        price : INT
+        price : REAL
         discription : TEXT
         typeid : INT
         platformid : INT
         series : TEXT
-        releaseDate : TEXT
+        genreID : INT
+        releaseDate : NUMERIC
         locationid : INT
     }
 
@@ -28,11 +30,16 @@ classDiagram
         name : TEXT
     }
 
+    class Genre {
+        id : INT
+        name : TEXT
+    }
+
     class Platform {
         id : INT
         name : TEXT
         discription : TEXT
-        releaseDate : TEXT
+        releaseDate : NUMERIC
     }
     
     class Publisher {
@@ -46,7 +53,10 @@ classDiagram
         id : INT
         locationType : INT
         locationName : TEXT
-        address : TEXT
+        country : TEXT
+        city : TEXT
+        street : TEXT
+        houseNumber : TEXT
     }
     
     class LocationType {
@@ -57,8 +67,8 @@ classDiagram
     class VisitorLog {
         locationid : INT
         visitorid : INT
-        date : TEXT
-        donation : INT
+        date : NUMERIC
+        donation : REAL
     }
     
     class Visitor {
@@ -67,7 +77,7 @@ classDiagram
         phone : TEXT
         email : TEXT
         address : TEXT
-    }       
+    } 
  ```
 ### Doel:
 
