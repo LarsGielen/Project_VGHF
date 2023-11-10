@@ -1,63 +1,72 @@
+CREATE TABLE Item (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT NOT NULL,
+    price REAL NOT NULL,
+    description TEXT NOT NULL,
+    typeid INTEGER NOT NULL,
+    platformid INTEGER,
+    series TEXT NOT NULL,
+    releaseDate NUMERIC NOT NULL,
+    locationid INTEGER NOT NULL,
+    FOREIGN KEY (typeid) REFERENCES ItemType(id),
+    FOREIGN KEY (platformid) REFERENCES Platform(id),
+    FOREIGN KEY (locationid) REFERENCES Location(id)
+);
+
 CREATE TABLE ItemType (
-    id INT PRIMARY KEY AUTOINCREMENT NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name TEXT NOT NULL
 );
 
+CREATE TABLE Genre (
+	id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+	name TEXT NOT NULL
+);
+
 CREATE TABLE Platform (
-    id INT PRIMARY KEY AUTOINCREMENT NOT NULL, 
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     releaseDate NUMERIC NOT NULL
 );
 
 CREATE TABLE Publisher (
-    id INT PRIMARY KEY AUTOINCREMENT NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name TEXT NOT NULL,
     description TEXT NOT NULL,
     website TEXT
 );
 
-CREATE TABLE LocationType (
-    id INT PRIMARY KEY AUTOINCREMENT NOT NULL,
-    name TEXT NOT NULL
-);
-
 CREATE TABLE Location (
-    id INT PRIMARY KEY AUTOINCREMENT NOT NULL,
-    locationType INT NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    locationType INTEGER NOT NULL,
     locationName TEXT NOT NULL,
-    address TEXT NOT NULL,
+    country TEXT NOT NULL,
+	city TEXT NOT NULL,
+	street TEXT NOT NULL,
+	houseNumber INTEGER NOT NULL,
     FOREIGN KEY (locationType) REFERENCES LocationType(id)
 );
 
-CREATE TABLE Visitor (
-    id INT PRIMARY KEY AUTOINCREMENT NOT NULL,
-    name TEXT NOT NULL,
-    phone TEXT NOT NULL,
-    email TEXT NOT NULL,
-    address TEXT NOT NULL
-);
-
-CREATE TABLE Item (
-    id INT PRIMARY KEY AUTOINCREMENT NOT NULL,
-    name TEXT NOT NULL,
-    price REAL NOT NULL,
-    description TEXT NOT NULL,
-    typeid INT NOT NULL,
-    platformid INT,
-    series TEXT NOT NULL,
-    releaseDate NUMERIC NOT NULL,
-    locationid INT NOT NULL,
-    FOREIGN KEY (typeid) REFERENCES ItemType(id),
-    FOREIGN KEY (platformid) REFERENCES Platform(id),
-    FOREIGN KEY (locationid) REFERENCES Location(id)
+CREATE TABLE LocationType (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT NOT NULL
 );
 
 CREATE TABLE VisitorLog (
-    locationid INT NOT NULL,
-    visitorid INT NOT NULL,
+    locationid INTEGER NOT NULL,
+    visitorid INTEGER NOT NULL,
     date NUMERIC NOT NULL,
-    donation REAL,
+    donation REAL NOT NULL,
     FOREIGN KEY (locationid) REFERENCES Location(id),
     FOREIGN KEY (visitorid) REFERENCES Visitor(id)
+);
+
+CREATE TABLE Visitor (
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    firstName TEXT NOT NULL,
+	lastName TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    email TEXT NOT NULL,
+    locationID INTEGER NOT NULL
 );
