@@ -4,6 +4,7 @@ classDiagram
     Item "0..*" --> "0..1" Platform
     Item "0..*" --> "1..*" Publisher
     Item "0..*" --> "1" Location
+    Item "0..*" --> "1..*" Genre
     VisitorLog "0..*" <-- "1" Location
     VisitorLog "0..*" --> "1" Visitor
     Location "0..*" --> "1" LocationType
@@ -16,11 +17,17 @@ classDiagram
         typeid : INT
         platformid : INT
         series : TEXT
+        genreID : INT
         releaseDate : NUMERIC
         locationid : INT
     }
 
     class ItemType {
+        id : INT
+        name : TEXT
+    }
+
+    class Genre {
         id : INT
         name : TEXT
     }
@@ -43,7 +50,10 @@ classDiagram
         id : INT
         locationType : INT
         locationName : TEXT
-        address : TEXT
+        country : TEXT
+        city : TEXT
+        street : TEXT
+        houseNumber : TEXT
     }
     
     class LocationType {
