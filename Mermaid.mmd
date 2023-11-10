@@ -5,7 +5,7 @@ classDiagram
     Item "0..*" --> "1..*" Publisher
     Item "0..*" --> "1" Location
     Item "0..*" --> "1..*" Genre
-    VisitorLog "0..*" <-- "1" Location
+    VisitorLog "0..*" --> "1" Location
     VisitorLog "0..*" --> "1" Visitor
     Location "0..*" --> "1" LocationType
 
@@ -16,6 +16,7 @@ classDiagram
         discription : TEXT
         typeid : INT
         platformid : INT
+        publisherid : INT
         series : TEXT
         genreID : INT
         releaseDate : NUMERIC
