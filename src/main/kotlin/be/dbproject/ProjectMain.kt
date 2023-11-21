@@ -8,6 +8,8 @@ import javafx.stage.Stage
 
 class ProjectMain : Application() {
 
+    fun getRootStage(): Stage? {return rootStage}
+
     @Throws(Exception::class)
     override fun start(stage: Stage) {
 
