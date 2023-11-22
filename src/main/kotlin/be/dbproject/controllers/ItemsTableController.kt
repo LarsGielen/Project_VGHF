@@ -48,7 +48,7 @@ class ItemsTableController {
 
         // Voeg placeholder-gegevens toe aan de tabel
         for (i in 0..<10) {
-            tblItems.items.add(Item(i, i, i,i,i,"Test", i.toDouble(), "Test","Test", "Test"))
+            tblItems.items.add(Item(i.toLong(), i, i,i,i,"Test", i.toDouble(), "Test","Test", "Test"))
         }
     }
 

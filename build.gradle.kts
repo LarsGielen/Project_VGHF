@@ -1,10 +1,11 @@
 plugins {
     kotlin("jvm") version "1.9.20"
     id("org.openjfx.javafxplugin") version "0.0.9"
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.5.21"
     application
 }
 
-group = "be.larsvinz"
+group = "be.dbproject"
 version = "1.0"
 
 repositories {
@@ -18,6 +19,12 @@ javafx {
 dependencies {
     implementation("org.openjfx:javafx-controls:17")
     implementation("org.openjfx:javafx-fxml:17")
+
+    implementation("javax.persistence:javax.persistence-api:2.2")
+    implementation("org.hibernate.orm:hibernate-core:6.3.1.Final")
+    implementation("org.xerial:sqlite-jdbc:3.32.3.2")
+    implementation("com.zsoltfabok:sqlite-dialect:1.0")
+
 
     testImplementation(kotlin("test"))
 }
