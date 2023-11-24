@@ -1,12 +1,15 @@
 package be.dbproject.models
 
-import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
+import javax.persistence.Table
 
 @Entity
 @Table(name = "item")
 data class Item(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue()
     val id: Long = 0,
 
     val typeId: Int,

@@ -13,7 +13,7 @@ class ProjectMain : Application() {
 
     @Throws(Exception::class)
     override fun start(stage: Stage) {
-        val sessionFactory = Persistence.createEntityManagerFactory("be.dbproject")
+        val sessionFactory = Persistence.createEntityManagerFactory("be.dbproject.domain")
         //val entityManager = sessionFactory.createEntityManager()
 
         rootStage = stage

@@ -21,7 +21,7 @@ dependencies {
     implementation("org.openjfx:javafx-fxml:17")
 
     implementation("javax.persistence:javax.persistence-api:2.2")
-    implementation("org.hibernate.orm:hibernate-core:6.3.1.Final")
+    implementation("org.hibernate:hibernate-core:5.4.23.Final")
     implementation("org.xerial:sqlite-jdbc:3.32.3.2")
     implementation("com.zsoltfabok:sqlite-dialect:1.0")
 
