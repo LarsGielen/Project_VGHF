@@ -18,19 +18,19 @@
    </top>
    <left>
       <VBox spacing="10" style="-fx-background-color: #e0e0e0; -fx-padding: 10;">
-         <Button text="Item Details" />
-         <Button text="Location Details" />
-         <Button text="Visitor Details" />
+         <Button fx:id="btnItemDetails" text="Item Details" />
+         <Button fx:id="btnLocationDetails" text="Location Details" />
+         <Button fx:id="btnVisitorDetails" text="Visitor Details" />
       </VBox>
    </left>
    <center>
       <VBox alignment="BOTTOM_CENTER" spacing="20" style="-fx-padding: 20;">
          <Label text="Video Game History Foundation" textAlignment="CENTER" />
          <Label text="Management System" textAlignment="CENTER" />
-         <HBox alignment="BOTTOM_CENTER" prefWidth="326.0" spacing="20">
-            <Button prefWidth="71.0" text="Manage Items" />
-            <Button text="Manage Locations" />
-            <Button text="Manage Visitors" />
+         <HBox alignment="BOTTOM_CENTER" prefWidth="527.0" spacing="20">
+            <Button fx:id="btnManageItems" prefHeight="26.0" prefWidth="111.0" text="Manage Items" />
+            <Button fx:id="btnManageLocations" prefHeight="26.0" prefWidth="135.0" text="Manage Locations" />
+            <Button fx:id="btnManageVisitors" prefHeight="26.0" prefWidth="119.0" text="Manage Visitors" />
          </HBox>
       </VBox>
    </center>
