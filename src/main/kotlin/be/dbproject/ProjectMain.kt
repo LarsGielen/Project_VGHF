@@ -13,8 +13,8 @@ class ProjectMain : Application() {
 
     @Throws(Exception::class)
     override fun start(stage: Stage) {
-        val sessionFactory = Persistence.createEntityManagerFactory("be.dbproject.domain")
-        //val entityManager = sessionFactory.createEntityManager()
+        val sessionFactory = Persistence.createEntityManagerFactory("be.dbproject")
+        val entityManager = sessionFactory.createEntityManager()
 
         rootStage = stage
         val loader = FXMLLoader(javaClass.classLoader.getResource("main.fxml"))
