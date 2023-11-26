@@ -1,5 +1,6 @@
 package be.dbproject
 
+import be.dbproject.controllers.ItemsTableController
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
@@ -13,9 +14,6 @@ class ProjectMain : Application() {
 
     @Throws(Exception::class)
     override fun start(stage: Stage) {
-        val sessionFactory = Persistence.createEntityManagerFactory("be.dbproject")
-        val entityManager = sessionFactory.createEntityManager()
-
         rootStage = stage
         val loader = FXMLLoader(javaClass.classLoader.getResource("main.fxml"))
         val root: Parent = loader.load()

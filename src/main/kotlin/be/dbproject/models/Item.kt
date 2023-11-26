@@ -10,7 +10,6 @@ import javax.persistence.Table
 @Table(name = "item")
 data class Item(
     @Id
-    @Column
     @GeneratedValue
     val id: Long = 0,
 
@@ -40,6 +39,4 @@ data class Item(
 
     @Column
     val releaseDate: String
-) {
-    constructor() : this(0, 0, null, 0, null, "", 0.0, "", "", "")
-}
+)

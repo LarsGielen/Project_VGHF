@@ -2,6 +2,7 @@ package be.dbproject.repositories
 
 import be.dbproject.models.Item
 import javax.persistence.EntityManager
+import javax.persistence.Persistence
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Path
@@ -9,7 +10,8 @@ import javax.persistence.criteria.Root
 import kotlin.reflect.KProperty1
 
 fun <T, V> Root<T>.get(prop: KProperty1<T, V>): Path<V> = this.get(prop.name)
-class ItemRepository(private val entityManager: EntityManager) {
+class ItemRepository {
+    private val entityManager: EntityManager = Persistence.createEntityManagerFactory("be.dbproject").createEntityManager()
 
     fun addItem(item: Item) {
         entityManager.transaction.begin()

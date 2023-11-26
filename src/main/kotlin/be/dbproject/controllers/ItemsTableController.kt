@@ -1,15 +1,19 @@
 package be.dbproject.controllers
 
 import be.dbproject.models.Item
-
+import be.dbproject.repositories.ItemRepository
+import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.fxml.FXML
 import javafx.scene.control.Button
 import javafx.scene.control.SelectionMode
 import javafx.scene.control.TableColumn
 import javafx.scene.control.TableView
+import java.util.*
+import javax.persistence.EntityManager
 
-import javafx.beans.property.ReadOnlyObjectWrapper
 class ItemsTableController {
+    private lateinit var entityManager: EntityManager
+    private lateinit var itemRepository: ItemRepository
 
     @FXML
     private lateinit var tblItems: TableView<Item>
@@ -29,6 +33,7 @@ class ItemsTableController {
         btn2.setOnAction { handleButton2() }
         btn3.setOnAction { handleButton3() }
 
+        this.itemRepository = ItemRepository();
         initTable()
     }
 
@@ -36,25 +41,48 @@ class ItemsTableController {
         tblItems.selectionModel.selectionMode = SelectionMode.SINGLE
         tblItems.columns.clear()
 
-        // TODO: Vervang dit met de werkelijke kolomnamen en gegevensklassen
-        val columnNames = arrayOf("Naam", "Eigenschap", "Prijs", "NogIets?")
+        val itemClass = Item::class.java
+        val properties = itemClass.declaredFields
 
-        // Voeg kolommen toe aan de tabel
-        for (colName in columnNames) {
-            val col = TableColumn<Item, String>(colName)
-            col.setCellValueFactory { f -> ReadOnlyObjectWrapper(f.value.name)}
+        for (property in properties) {
+            val col = TableColumn<Item, Any>(property.name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() })
+            col.setCellValueFactory { cellData ->
+                val field = itemClass.getDeclaredField(property.name)
+                field.isAccessible = true
+                ReadOnlyObjectWrapper(field.get(cellData.value))
+            }
             tblItems.columns.add(col)
         }
 
-        // Voeg placeholder-gegevens toe aan de tabel
-        for (i in 0..<10) {
-            tblItems.items.add(Item(i.toLong(), i, i,i,i,"Test", i.toDouble(), "Test","Test", "Test"))
+        try {
+            val items = itemRepository.getAllItems()
+            tblItems.items.addAll(items)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
     @FXML
     fun handleButton1() {
         println("Button 1 clicked")
+
+        val dummyItem1 = Item(typeId = 1, platformId = 1, locationId = 1, publisherId = 1, name = "Dummy Item 1", price = 9.99, description = "This is a dummy item.", series = "Dummy Series", releaseDate = "2023-01-01")
+        val dummyItem2 = Item(typeId = 2, platformId = 2, locationId = 2, publisherId = 2, name = "Dummy Item 2", price = 14.99, description = "Another dummy item.", series = "Dummy Series", releaseDate = "2023-01-02")
+        try {
+            itemRepository.addItem(dummyItem1)
+            itemRepository.addItem(dummyItem2)
+
+            // Vernieuw de tabel na het toevoegen van dummy-items
+            // Het vernieuwen van de tabel kan best in een aparte functie als deze binnenkort vaker gebruikt wordt.
+            val items = itemRepository.getAllItems()
+            tblItems.items.setAll(items)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            entityManager.close()
+        }
+
+
     }
 
     @FXML
