@@ -32,11 +32,13 @@ data class Item(
     var price: Double,
 
     @Column
-    val description: String,
+    var description: String,
 
     @Column
-    val series: String,
+    var series: String,
 
     @Column
-    val releaseDate: String
-)
+    var releaseDate: String
+) {
+    constructor() : this(0, 0, null, 0, null, "", 0.0, "", "", "")
+}

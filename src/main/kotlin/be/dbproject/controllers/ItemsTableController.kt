@@ -4,15 +4,15 @@ import be.dbproject.models.Item
 import be.dbproject.repositories.ItemRepository
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.fxml.FXML
-import javafx.scene.control.Button
-import javafx.scene.control.SelectionMode
-import javafx.scene.control.TableColumn
-import javafx.scene.control.TableView
+import javafx.fxml.FXMLLoader
+import javafx.scene.Scene
+import javafx.scene.control.*
+import javafx.scene.layout.VBox
+import javafx.stage.Modality
+import javafx.stage.Stage
 import java.util.*
-import javax.persistence.EntityManager
 
 class ItemsTableController {
-    private lateinit var entityManager: EntityManager
     private lateinit var itemRepository: ItemRepository
 
     @FXML
@@ -29,11 +29,11 @@ class ItemsTableController {
 
     @FXML
     fun initialize() {
-        btn1.setOnAction { handleButton1() }
-        btn2.setOnAction { handleButton2() }
-        btn3.setOnAction { handleButton3() }
+        btn1.setOnAction { handleNewItem() }
+        btn2.setOnAction { handleDeleteItem() }
+        btn3.setOnAction { handleEditItems() }
 
-        this.itemRepository = ItemRepository();
+        this.itemRepository = ItemRepository()
         initTable()
     }
 
@@ -59,39 +59,105 @@ class ItemsTableController {
             tblItems.items.addAll(items)
         } catch (e: Exception) {
             e.printStackTrace()
+            val alert = Alert(Alert.AlertType.ERROR, "Error loading items.")
+            alert.showAndWait()
         }
     }
 
     @FXML
-    fun handleButton1() {
-        println("Button 1 clicked")
+    fun handleNewItem() = openItemDialog("Add Item", Item())
 
-        val dummyItem1 = Item(typeId = 1, platformId = 1, locationId = 1, publisherId = 1, name = "Dummy Item 1", price = 9.99, description = "This is a dummy item.", series = "Dummy Series", releaseDate = "2023-01-01")
-        val dummyItem2 = Item(typeId = 2, platformId = 2, locationId = 2, publisherId = 2, name = "Dummy Item 2", price = 14.99, description = "Another dummy item.", series = "Dummy Series", releaseDate = "2023-01-02")
-        try {
-            itemRepository.addItem(dummyItem1)
-            itemRepository.addItem(dummyItem2)
+    @FXML
+    fun handleDeleteItem() {
+        val selectedItem = tblItems.selectionModel.selectedItem
 
-            // Vernieuw de tabel na het toevoegen van dummy-items
-            // Het vernieuwen van de tabel kan best in een aparte functie als deze binnenkort vaker gebruikt wordt.
-            val items = itemRepository.getAllItems()
-            tblItems.items.setAll(items)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            entityManager.close()
+        if (selectedItem != null) {
+            try {itemRepository.deleteItem(selectedItem.id); tblItems.items.remove(selectedItem)}
+            catch (e: Exception) {
+                val alert = Alert(Alert.AlertType.ERROR, "Error deleting item.")
+                alert.showAndWait()
+            }
+        } else {
+            val alert = Alert(Alert.AlertType.WARNING, "Select an item to edit.")
+            alert.showAndWait()
+        }
+    }
+
+    @FXML
+    fun handleEditItems() {
+        val selectedItem = tblItems.selectionModel.selectedItem
+
+        if (selectedItem != null) {
+            openItemDialog("Edit Item", selectedItem)
+        } else {
+            val alert = Alert(Alert.AlertType.WARNING, "Select an item to edit.")
+            alert.showAndWait()
+        }
+    }
+
+    private fun openItemDialog(title: String, item: Item) {
+        val fxmlLoader = FXMLLoader(javaClass.classLoader.getResource("ItemInputDialog.fxml"))
+        val dialogPane = fxmlLoader.load<VBox>()
+
+        val dialogStage = Stage()
+        dialogStage.title = title
+        dialogStage.initModality(Modality.APPLICATION_MODAL)
+        dialogStage.initOwner(tblItems.scene.window)
+        dialogStage.scene = Scene(dialogPane)
+
+        val nameTextField = fxmlLoader.namespace["nameTextField"] as TextField
+        val typeTextField = fxmlLoader.namespace["typeTextField"] as TextField
+        val priceTextField = fxmlLoader.namespace["priceTextField"] as TextField
+        val descriptionTextField = fxmlLoader.namespace["descriptionTextField"] as TextField
+        val seriesTextField = fxmlLoader.namespace["seriesTextField"] as TextField
+        val releaseDateTextField = fxmlLoader.namespace["releaseDateTextField"] as TextField
+
+        nameTextField.text = item.name
+        priceTextField.text = item.price.toString()
+        descriptionTextField.text = item.description
+        seriesTextField.text = item.series
+        releaseDateTextField.text = item.releaseDate
+
+        val okButton = fxmlLoader.namespace["okButton"] as Button
+        val cancelButton = fxmlLoader.namespace["cancelButton"] as Button
+
+        okButton.setOnAction {
+            try {
+                if (title == "Add Item") {
+                    val newItem = Item(
+                        name = nameTextField.text,
+                        price = priceTextField.text.toDoubleOrNull() ?: 0.0,
+                        description = descriptionTextField.text,
+                        series = seriesTextField.text,
+                        releaseDate = releaseDateTextField.text,
+                        locationId = 0,
+                        platformId = 0,
+                        publisherId = 0,
+                        typeId = 0
+                    )
+                    itemRepository.addItem(newItem)
+                    val items = itemRepository.getAllItems()
+                    tblItems.items.setAll(items)
+                } else if (title == "Edit Item") {
+                    item.name = nameTextField.text
+                    item.price = priceTextField.text.toDoubleOrNull() ?: 0.0
+                    item.description = descriptionTextField.text
+                    item.series = seriesTextField.text
+                    item.releaseDate = releaseDateTextField.text
+
+                    itemRepository.updateItem(item)
+                    tblItems.refresh()
+                }
+                dialogStage.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                val alert = Alert(Alert.AlertType.ERROR, "Error handling $title.")
+                alert.showAndWait()
+            }
         }
 
-
-    }
-
-    @FXML
-    fun handleButton2() {
-        println("Button 2 clicked")
-    }
-
-    @FXML
-    fun handleButton3() {
-        println("Button 3 clicked")
+        cancelButton.setOnAction { dialogStage.close() }
+        dialogStage.showAndWait()
     }
 }
+
