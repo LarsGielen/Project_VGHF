@@ -10,7 +10,7 @@ import kotlin.reflect.KProperty1
 
 fun <T, V> Root<T>.get(prop: KProperty1<T, V>): Path<V> = this.get(prop.name)
 class ItemRepository() {
-    private val entityManager = Persistence.createEntityManagerFactory("be.dbproject").createEntityManager()
+        private val entityManager = Persistence.createEntityManagerFactory("be.dbproject").createEntityManager()
     fun addItem(item: Item) {
         entityManager.transaction.begin()
         entityManager.persist(item)
