@@ -33,6 +33,7 @@ class ItemsTableController {
         btn2.setOnAction { handleDeleteItem() }
         btn3.setOnAction { handleEditItems() }
 
+
         this.itemRepository = ItemRepository()
         initTable()
     }

@@ -5,26 +5,21 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import javax.persistence.EntityManager
-import javax.persistence.EntityManagerFactory
 import javax.persistence.Persistence
 
 class ItemRepositoryTest {
-    private lateinit var factory: EntityManagerFactory
     private lateinit var entityManager: EntityManager
     private lateinit var itemRepository: ItemRepository
 
     @BeforeEach
     fun setUp() {
-        factory = Persistence.createEntityManagerFactory("be.dbproject")
-        entityManager = factory.createEntityManager()
-
+        entityManager = Persistence.createEntityManagerFactory("be.dbproject").createEntityManager()
         itemRepository = ItemRepository()
     }
 
     @AfterEach
     fun tearDown() {
         entityManager.close()
-        factory.close()
     }
 
     @Test
