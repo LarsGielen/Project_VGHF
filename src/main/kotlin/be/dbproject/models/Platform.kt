@@ -1,12 +1,11 @@
 package be.dbproject.models
 
-import javax.persistence.Column
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import javax.persistence.*
 
+@Entity
+@Table(name = "Platform")
 data class Platform(
     @Id
-    @Column
     @GeneratedValue
     val id: Int,
 

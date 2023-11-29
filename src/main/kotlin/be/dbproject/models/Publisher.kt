@@ -1,9 +1,9 @@
 package be.dbproject.models
 
-import javax.persistence.Column
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import javax.persistence.*
 
+@Entity
+@Table(name = "Publisher")
 data class Publisher(
     @Id
     @Column

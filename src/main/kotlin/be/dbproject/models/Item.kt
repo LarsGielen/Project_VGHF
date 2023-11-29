@@ -7,23 +7,23 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name = "item")
+@Table(name = "Item")
 data class Item(
     @Id
     @GeneratedValue
     val id: Long = 0,
 
     @Column
-    val typeId: Int,
+    val typeId: Long,
 
     @Column
-    val platformId: Int?,
+    val platformId: Long?,
 
     @Column
-    val locationId: Int,
+    val locationId: Long,
 
     @Column
-    val publisherId: Int?,
+    val publisherId: Long?,
 
     @Column
     var name: String,
@@ -38,7 +38,10 @@ data class Item(
     var series: String,
 
     @Column
+    var genreId: Long,
+
+    @Column
     var releaseDate: String
 ) {
-    constructor() : this(0, 0, null, 0, null, "", 0.0, "", "", "")
+    constructor() : this(0, 0, null, 0, null, "", 0.0, "", "", 0,"")
 }

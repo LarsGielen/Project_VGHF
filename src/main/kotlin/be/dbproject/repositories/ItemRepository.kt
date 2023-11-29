@@ -1,28 +1,22 @@
 package be.dbproject.repositories
-import be.dbproject.models.Genre
+
 import be.dbproject.models.Item
 import javax.persistence.Persistence
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.Path
 import javax.persistence.criteria.Root
-import kotlin.reflect.KProperty1
 
-
-class genreRepositry {
+class ItemRepository : BaseRepository<Item>(Item::class.java) {
     private val entityManager = Persistence.createEntityManagerFactory("be.dbproject").createEntityManager()
 
-    fun getGenreByName(name: String): List<Genre> {
+    fun getItemsByName(name: String): List<Item> {
         val criteriaBuilder: CriteriaBuilder = entityManager.criteriaBuilder
-        val query: CriteriaQuery<Genre> = criteriaBuilder.createQuery(Genre::class.java)
-        val root: Root<Genre>? = query.from(Genre::class.java)
+        val query: CriteriaQuery<Item> = criteriaBuilder.createQuery(Item::class.java)
+        val root: Root<Item> = query.from(Item::class.java)
 
         query.select(root)
-        if (root != null) {
-            query.where(criteriaBuilder.equal(root.get(Genre::name), name))
-        }
+        query.where(criteriaBuilder.equal(root.get(Item::name), name))
 
         return entityManager.createQuery(query).resultList
     }
-
 }

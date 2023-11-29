@@ -7,6 +7,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>be.dbproject.models.Item</class>
+        <class>be.dbproject.models.Genre</class>
         <!-- Add other entity classes here-->
 
         <properties>

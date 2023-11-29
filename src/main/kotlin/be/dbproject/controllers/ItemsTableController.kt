@@ -56,7 +56,7 @@ class ItemsTableController {
         }
 
         try {
-            val items = itemRepository.getAllItems()
+            val items = itemRepository.getAllEntities()
             tblItems.items.addAll(items)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -73,7 +73,7 @@ class ItemsTableController {
         val selectedItem = tblItems.selectionModel.selectedItem
 
         if (selectedItem != null) {
-            try {itemRepository.deleteItem(selectedItem.id); tblItems.items.remove(selectedItem)}
+            try {itemRepository.deleteEntity(selectedItem.id); tblItems.items.remove(selectedItem)}
             catch (e: Exception) {
                 val alert = Alert(Alert.AlertType.ERROR, "Error deleting item.")
                 alert.showAndWait()
@@ -134,10 +134,11 @@ class ItemsTableController {
                         locationId = 0,
                         platformId = 0,
                         publisherId = 0,
+                        genreId = 0,
                         typeId = 0
                     )
-                    itemRepository.addItem(newItem)
-                    val items = itemRepository.getAllItems()
+                    itemRepository.addEntity(newItem)
+                    val items = itemRepository.getAllEntities()
                     tblItems.items.setAll(items)
                 } else if (title == "Edit Item") {
                     item.name = nameTextField.text
@@ -146,9 +147,10 @@ class ItemsTableController {
                     item.series = seriesTextField.text
                     item.releaseDate = releaseDateTextField.text
 
-                    itemRepository.updateItem(item)
+                    itemRepository.updateEntity(item)
                     tblItems.refresh()
                 }
+
                 dialogStage.close()
             } catch (e: Exception) {
                 e.printStackTrace()

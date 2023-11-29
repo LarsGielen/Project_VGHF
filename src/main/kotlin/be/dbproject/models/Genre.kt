@@ -1,15 +1,16 @@
 package be.dbproject.models
 
-import javax.persistence.Column
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import javax.persistence.*
 
+@Entity
+@Table(name = "Genre")
 data class Genre(
     @Id
-    @Column
     @GeneratedValue
-    val id: Int,
+    var id: Long,
 
     @Column
-    val name: String
-)
+    var name: String
+) {
+    constructor() : this(0, "")
+}
