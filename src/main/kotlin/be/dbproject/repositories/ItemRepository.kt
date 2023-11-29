@@ -7,8 +7,6 @@ import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
 
 class ItemRepository : BaseRepository<Item>(Item::class.java) {
-    private val entityManager = Persistence.createEntityManagerFactory("be.dbproject").createEntityManager()
-
     fun getItemsByName(name: String): List<Item> {
         val criteriaBuilder: CriteriaBuilder = entityManager.criteriaBuilder
         val query: CriteriaQuery<Item> = criteriaBuilder.createQuery(Item::class.java)

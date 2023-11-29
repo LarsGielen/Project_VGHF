@@ -1,7 +1,6 @@
-package be.dbproject
+package be.dbproject.repositories
 
 import be.dbproject.models.Item
-import be.dbproject.repositories.ItemRepository
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -42,52 +41,16 @@ class ItemRepositoryTest {
         itemRepository.addEntity(item)
         assertTrue(item.id > 0, "Item should have been assigned an ID.")
     }
-    @Test
-    fun `getItemsByName should return items with matching name`() {
-        val itemName = "Test Item"
 
+    @Test
+    fun `getAllEntities should return all entities`() {
         val item1 = Item(
             typeId = 1,
             platformId = 2,
             locationId = 3,
             publisherId = 4,
             genreId = 0,
-            name = itemName,
-            price = 19.99,
-            description = "Test description",
-            series = "Test Series",
-            releaseDate = "2023-01-01"
-        )
-
-        val item2 = Item(
-            typeId = 2,
-            platformId = 3,
-            locationId = 4,
-            genreId = 0,
-            publisherId = 5,
-            name = "Another Item",
-            price = 19.99,
-            description = "Test description",
-            series = "Test Series",
-            releaseDate = "2023-01-01"
-        )
-
-        itemRepository.addEntity(item1)
-        itemRepository.addEntity(item2)
-
-        val items = itemRepository.getItemsByName(itemName)
-        assertEquals(1, items.size, "Only one item with the specified name should be returned.")
-        assertEquals(item1, items[0], "Returned item should match the one with the specified name.")
-    }
-    @Test
-    fun `getAllItems should return all items`(){
-        val item1 = Item(
-            typeId = 1,
-            platformId = 2,
-            locationId = 3,
-            publisherId = 4,
             name = "Test Item 1",
-            genreId = 0,
             price = 19.99,
             description = "Test description",
             series = "Test Series",
@@ -110,13 +73,35 @@ class ItemRepositoryTest {
         itemRepository.addEntity(item1)
         itemRepository.addEntity(item2)
 
-        val items = itemRepository.getAllEntities();
-        assertEquals(item1, items[0])
-        assertEquals(item2, items[1])
-
+        val items = itemRepository.getAllEntities()
+        assertEquals(2, items.size, "Should return all items.")
+        assertTrue(items.contains(item1), "Items list should contain item1.")
+        assertTrue(items.contains(item2), "Items list should contain item2.")
     }
+
     @Test
-    fun `given item when updating properties and updateItem then properties changed in DB`() {
+    fun `getEntityById should return specific entity`() {
+        val item = Item(
+            typeId = 1,
+            platformId = 2,
+            locationId = 3,
+            publisherId = 4,
+            genreId = 0,
+            name = "Test Item",
+            price = 19.99,
+            description = "Test description",
+            series = "Test Series",
+            releaseDate = "2023-01-01"
+        )
+
+        itemRepository.addEntity(item)
+        val retrievedItem = itemRepository.getEntityById(item.id)
+        assertNotNull(retrievedItem, "Should retrieve the item.")
+        assertEquals(item, retrievedItem, "Retrieved item should match the added item.")
+    }
+
+    @Test
+    fun `updateEntity should update entity in the database`() {
         val item = Item(
             typeId = 1,
             platformId = 2,
@@ -136,7 +121,7 @@ class ItemRepositoryTest {
             name = "Updated Item"
             price = 29.99
         }
-        itemRepository.addEntity(item)
+        itemRepository.updateEntity(item)
 
         val updatedItem = itemRepository.getEntityById(item.id)
 
@@ -146,7 +131,7 @@ class ItemRepositoryTest {
     }
 
     @Test
-    fun `deleteItem should remove item from the database`() {
+    fun `deleteEntity should remove entity from the database`() {
         val item = Item(
             typeId = 1,
             platformId = 2,

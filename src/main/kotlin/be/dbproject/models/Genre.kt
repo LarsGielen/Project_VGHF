@@ -11,6 +11,4 @@ data class Genre(
 
     @Column
     var name: String
-) {
-    constructor() : this(0, "")
-}
+)

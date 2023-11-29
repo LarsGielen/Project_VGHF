@@ -10,7 +10,7 @@ import kotlin.reflect.KProperty1
 
 fun <T, V> Root<T>.get(prop: KProperty1<T, V>): Path<V> = this.get(prop.name)
 abstract class BaseRepository<T>(private val entityClass: Class<T>) {
-    private val entityManager: EntityManager = Persistence.createEntityManagerFactory("be.dbproject").createEntityManager()
+    protected val entityManager: EntityManager = Persistence.createEntityManagerFactory("be.dbproject").createEntityManager()
 
     fun addEntity(entity: T) {
         entityManager.transaction.begin()

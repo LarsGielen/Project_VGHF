@@ -1,7 +1,9 @@
 package be.dbproject.controllers
 
+import be.dbproject.models.Genre
 import be.dbproject.models.Item
 import be.dbproject.repositories.ItemRepository
+import be.dbproject.repositories.GenreRepository
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -108,10 +110,16 @@ class ItemsTableController {
 
         val nameTextField = fxmlLoader.namespace["nameTextField"] as TextField
         val typeTextField = fxmlLoader.namespace["typeTextField"] as TextField
+
+        val genreComboBox = fxmlLoader.namespace["genreComboBox"] as ComboBox<String>
+        genreComboBox.items.addAll(GenreRepository().getAllEntities().toString())
+
         val priceTextField = fxmlLoader.namespace["priceTextField"] as TextField
         val descriptionTextField = fxmlLoader.namespace["descriptionTextField"] as TextField
         val seriesTextField = fxmlLoader.namespace["seriesTextField"] as TextField
         val releaseDateTextField = fxmlLoader.namespace["releaseDateTextField"] as TextField
+
+
 
         nameTextField.text = item.name
         priceTextField.text = item.price.toString()
