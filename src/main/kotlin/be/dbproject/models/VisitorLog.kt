@@ -6,9 +6,8 @@ import javax.persistence.*
 @Table(name = "VisitorLog")
 data class VisitorLog(
     @Id
-    @Column
     @GeneratedValue
-    val locationId: Int,
+    val locationId: Long = 0,
 
     @Column
     val visitorId: Int,

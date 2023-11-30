@@ -32,13 +32,10 @@ class VisitorTableController {
     }
     
     private fun initTable() {
-        val colId = TableColumn<Visitor, Int>("ID")
+        val colId = TableColumn<Visitor, Long>("ID")
         colId.setCellValueFactory { f -> ReadOnlyObjectWrapper(f.value.id) }
 
         tblVisitors.columns.addAll(colId)
-        for (i in 0..<10) {
-            tblVisitors.items.add(Visitor(i,"firstNameTest", "lastNameTest", "phoneTest", "emailTest", i))
-        }
     }
 
     @FXML

@@ -7,7 +7,7 @@ import javax.persistence.*
 data class LocationType(
     @Id
     @GeneratedValue
-    val id: Int,
+    val id: Long = 0,
 
     @Column
     val name: String

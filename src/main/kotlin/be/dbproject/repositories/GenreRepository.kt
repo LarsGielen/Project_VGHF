@@ -4,7 +4,6 @@ import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
 
-
 class GenreRepository : BaseRepository<Genre>(Genre::class.java) {
     fun getGenreByName(name: String): List<Genre> {
         val criteriaBuilder: CriteriaBuilder = entityManager.criteriaBuilder
@@ -13,7 +12,7 @@ class GenreRepository : BaseRepository<Genre>(Genre::class.java) {
 
         query.select(root)
         if (root != null) {
-            query.where(criteriaBuilder.equal(root.get(Genre::name), name))
+            query.where(criteriaBuilder.equal(root.get<String>("name"), name))
         }
 
         return entityManager.createQuery(query).resultList

@@ -8,7 +8,7 @@ data class Visitor(
     @Id
     @Column
     @GeneratedValue
-    val id: Int,
+    val id: Long = 0,
 
     @Column
     val firstName: String,

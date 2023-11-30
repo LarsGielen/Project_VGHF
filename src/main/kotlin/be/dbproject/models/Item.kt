@@ -15,7 +15,7 @@ data class Item(
     val id: Long = 0,
 
     @Column
-    val typeId: Long,
+    var typeId: Long,
 
     @Column
     val platformId: Long?,
@@ -24,7 +24,7 @@ data class Item(
     val locationId: Long,
 
     @Column
-    val publisherId: Long?,
+    val publisherId: Long,
 
     @Column
     var name: String,

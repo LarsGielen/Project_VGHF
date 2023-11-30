@@ -8,6 +8,10 @@
 
         <class>be.dbproject.models.Item</class>
         <class>be.dbproject.models.Genre</class>
+        <class>be.dbproject.models.ItemType</class>
+        <class>be.dbproject.models.Publisher</class>
+        <class>be.dbproject.models.Location</class>
+        <class>be.dbproject.models.Platform</class>
         <!-- Add other entity classes here-->
 
         <properties>
@@ -15,7 +19,7 @@
             <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:VGHF" />
             <property name="javax.persistence.jdbc.user" value="" />
             <property name="javax.persistence.jdbc.password" value="" />
-            <property name="javax.persistence.schema-generation.database.action" value="create"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
 
             <property name="hibernate.dialect" value="org.hibernate.dialect.SQLiteDialect"/>
             <property name="hibernate.connection.autocommit" value="true"/>

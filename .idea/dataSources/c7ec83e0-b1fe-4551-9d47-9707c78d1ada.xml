@@ -446,8 +446,8 @@
     <routine id="176" parent="1" name="fts5"/>
     <schema id="177" parent="1" name="main">
       <Current>1</Current>
-      <IntrospectionTimestamp>2023-11-21.22:27:01.218</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2023-11-21.21:27:01</LocalIntrospectionTimestamp>
+      <IntrospectionTimestamp>2023-11-30.19:47:12.002</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2023-11-30.18:47:12</LocalIntrospectionTimestamp>
     </schema>
     <argument id="178" parent="16">
       <ArgumentDirection>R</ArgumentDirection>
@@ -1479,345 +1479,350 @@
     <table id="525" parent="177" name="Publisher"/>
     <table id="526" parent="177" name="Visitor"/>
     <table id="527" parent="177" name="VisitorLog"/>
-    <table id="528" parent="177" name="sqlite_master">
+    <table id="528" parent="177" name="hibernate_sequence"/>
+    <table id="529" parent="177" name="sqlite_master">
       <System>1</System>
     </table>
-    <table id="529" parent="177" name="sqlite_sequence">
+    <table id="530" parent="177" name="sqlite_sequence">
       <System>1</System>
     </table>
-    <column id="530" parent="518" name="id">
+    <column id="531" parent="518" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="531" parent="518" name="name">
+    <column id="532" parent="518" name="name">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <key id="532" parent="518">
+    <key id="533" parent="518">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="533" parent="519" name="id">
+    <column id="534" parent="519" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="534" parent="519" name="typeid">
+    <column id="535" parent="519" name="typeid">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="535" parent="519" name="platformid">
+    <column id="536" parent="519" name="platformid">
       <DasType>INTEGER|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="536" parent="519" name="locationid">
+    <column id="537" parent="519" name="locationid">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="537" parent="519" name="publisherid">
+    <column id="538" parent="519" name="publisherid">
       <DasType>INTEGER|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="538" parent="519" name="name">
+    <column id="539" parent="519" name="name">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="539" parent="519" name="price">
+    <column id="540" parent="519" name="price">
       <DasType>REAL|0s</DasType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="540" parent="519" name="description">
+    <column id="541" parent="519" name="description">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <column id="541" parent="519" name="series">
+    <column id="542" parent="519" name="series">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
-    <column id="542" parent="519" name="releaseDate">
+    <column id="543" parent="519" name="releaseDate">
       <DasType>NUMERIC|0s</DasType>
       <NotNull>1</NotNull>
       <Position>10</Position>
     </column>
-    <foreign-key id="543" parent="519">
+    <foreign-key id="544" parent="519">
       <ColNames>typeid</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>ItemType</RefTableName>
     </foreign-key>
-    <foreign-key id="544" parent="519">
+    <foreign-key id="545" parent="519">
       <ColNames>platformid</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>Platform</RefTableName>
     </foreign-key>
-    <foreign-key id="545" parent="519">
+    <foreign-key id="546" parent="519">
       <ColNames>locationid</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>Location</RefTableName>
     </foreign-key>
-    <foreign-key id="546" parent="519">
+    <foreign-key id="547" parent="519">
       <ColNames>publisherid</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>Publisher</RefTableName>
     </foreign-key>
-    <key id="547" parent="519">
+    <key id="548" parent="519">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="548" parent="520" name="itemid">
+    <column id="549" parent="520" name="itemid">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="549" parent="520" name="genreid">
+    <column id="550" parent="520" name="genreid">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <foreign-key id="550" parent="520">
+    <foreign-key id="551" parent="520">
       <ColNames>itemid</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>Item</RefTableName>
     </foreign-key>
-    <foreign-key id="551" parent="520">
+    <foreign-key id="552" parent="520">
       <ColNames>genreid</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>Genre</RefTableName>
     </foreign-key>
-    <index id="552" parent="520" name="sqlite_autoindex_ItemGenreLink_1">
+    <index id="553" parent="520" name="sqlite_autoindex_ItemGenreLink_1">
       <ColNames>itemid
 genreid</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="553" parent="520">
+    <key id="554" parent="520">
       <ColNames>itemid
 genreid</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_ItemGenreLink_1</UnderlyingIndexName>
     </key>
-    <column id="554" parent="521" name="id">
+    <column id="555" parent="521" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="555" parent="521" name="name">
+    <column id="556" parent="521" name="name">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <key id="556" parent="521">
+    <key id="557" parent="521">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="557" parent="522" name="id">
+    <column id="558" parent="522" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="558" parent="522" name="locationType">
+    <column id="559" parent="522" name="locationType">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="559" parent="522" name="locationName">
+    <column id="560" parent="522" name="locationName">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="560" parent="522" name="country">
+    <column id="561" parent="522" name="country">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="561" parent="522" name="city">
+    <column id="562" parent="522" name="city">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="562" parent="522" name="street">
+    <column id="563" parent="522" name="street">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="563" parent="522" name="houseNumber">
+    <column id="564" parent="522" name="houseNumber">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <foreign-key id="564" parent="522">
+    <foreign-key id="565" parent="522">
       <ColNames>locationType</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>LocationType</RefTableName>
     </foreign-key>
-    <key id="565" parent="522">
+    <key id="566" parent="522">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="566" parent="523" name="id">
+    <column id="567" parent="523" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="567" parent="523" name="name">
+    <column id="568" parent="523" name="name">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <key id="568" parent="523">
+    <key id="569" parent="523">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="569" parent="524" name="id">
+    <column id="570" parent="524" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="570" parent="524" name="name">
+    <column id="571" parent="524" name="name">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="571" parent="524" name="description">
+    <column id="572" parent="524" name="description">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="572" parent="524" name="releaseDate">
+    <column id="573" parent="524" name="releaseDate">
       <DasType>NUMERIC|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <key id="573" parent="524">
+    <key id="574" parent="524">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="574" parent="525" name="id">
+    <column id="575" parent="525" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="575" parent="525" name="name">
+    <column id="576" parent="525" name="name">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="576" parent="525" name="description">
+    <column id="577" parent="525" name="description">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="577" parent="525" name="website">
+    <column id="578" parent="525" name="website">
       <DasType>TEXT|0s</DasType>
       <Position>4</Position>
     </column>
-    <key id="578" parent="525">
+    <key id="579" parent="525">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="579" parent="526" name="id">
+    <column id="580" parent="526" name="id">
       <AutoIncrement>1</AutoIncrement>
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="580" parent="526" name="firstName">
+    <column id="581" parent="526" name="firstName">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="581" parent="526" name="lastName">
+    <column id="582" parent="526" name="lastName">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="582" parent="526" name="phone">
+    <column id="583" parent="526" name="phone">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="583" parent="526" name="email">
+    <column id="584" parent="526" name="email">
       <DasType>TEXT|0s</DasType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="584" parent="526" name="locationID">
+    <column id="585" parent="526" name="locationID">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <key id="585" parent="526">
+    <key id="586" parent="526">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="586" parent="527" name="locationid">
+    <column id="587" parent="527" name="locationid">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="587" parent="527" name="visitorid">
+    <column id="588" parent="527" name="visitorid">
       <DasType>INTEGER|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="588" parent="527" name="date">
+    <column id="589" parent="527" name="date">
       <DasType>NUMERIC|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="589" parent="527" name="donation">
+    <column id="590" parent="527" name="donation">
       <DasType>REAL|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <foreign-key id="590" parent="527">
+    <foreign-key id="591" parent="527">
       <ColNames>locationid</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>Location</RefTableName>
     </foreign-key>
-    <foreign-key id="591" parent="527">
+    <foreign-key id="592" parent="527">
       <ColNames>visitorid</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>Visitor</RefTableName>
     </foreign-key>
-    <column id="592" parent="528" name="type">
+    <column id="593" parent="528" name="next_val">
+      <DasType>bigint|0s</DasType>
+      <Position>1</Position>
+    </column>
+    <column id="594" parent="529" name="type">
       <DasType>TEXT|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="593" parent="528" name="name">
+    <column id="595" parent="529" name="name">
       <DasType>TEXT|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="594" parent="528" name="tbl_name">
+    <column id="596" parent="529" name="tbl_name">
       <DasType>TEXT|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="595" parent="528" name="rootpage">
+    <column id="597" parent="529" name="rootpage">
       <DasType>INT|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="596" parent="528" name="sql">
+    <column id="598" parent="529" name="sql">
       <DasType>TEXT|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="597" parent="529" name="name">
+    <column id="599" parent="530" name="name">
       <Position>1</Position>
     </column>
-    <column id="598" parent="529" name="seq">
+    <column id="600" parent="530" name="seq">
       <Position>2</Position>
     </column>
   </database-model>

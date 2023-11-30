@@ -8,7 +8,7 @@ data class ItemGenreLink(
     @Id
     @Column
     @GeneratedValue
-    val itemId: Int,
+    val itemId: Long = 0,
 
     @Column
     val genreId: Int

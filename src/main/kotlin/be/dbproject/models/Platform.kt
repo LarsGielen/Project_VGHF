@@ -1,5 +1,6 @@
 package be.dbproject.models
 
+import java.time.LocalDate
 import javax.persistence.*
 
 @Entity
@@ -7,7 +8,7 @@ import javax.persistence.*
 data class Platform(
     @Id
     @GeneratedValue
-    val id: Int,
+    val id: Long = 0,
 
     @Column
     val name: String,
@@ -16,5 +17,5 @@ data class Platform(
     val description: String,
 
     @Column
-    val releaseDate: String
+    val releaseDate: LocalDate
 )

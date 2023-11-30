@@ -6,9 +6,8 @@ import javax.persistence.*
 @Table(name = "Publisher")
 data class Publisher(
     @Id
-    @Column
     @GeneratedValue
-    val id: Int,
+    val id: Long = 0,
 
     @Column
     val name: String,

@@ -13,7 +13,7 @@ class ItemRepository : BaseRepository<Item>(Item::class.java) {
         val root: Root<Item> = query.from(Item::class.java)
 
         query.select(root)
-        query.where(criteriaBuilder.equal(root.get(Item::name), name))
+        query.where(criteriaBuilder.equal(root.get<String>("name"), name))
 
         return entityManager.createQuery(query).resultList
     }

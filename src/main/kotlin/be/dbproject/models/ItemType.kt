@@ -6,10 +6,13 @@ import javax.persistence.*
 @Table(name = "ItemType")
 data class ItemType(
     @Id
-    @Column
     @GeneratedValue
-    val id: Int,
+    val id: Long = 0,
 
     @Column
     val name: String
-)
+) {
+    override fun toString(): String {
+        return name
+    }
+}
