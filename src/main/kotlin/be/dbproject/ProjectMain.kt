@@ -10,10 +10,9 @@ import javax.persistence.Persistence
 
 class ProjectMain : Application() {
 
-    fun getRootStage(): Stage? {return rootStage}
-
     @Throws(Exception::class)
     override fun start(stage: Stage) {
+
         rootStage = stage
         val loader = FXMLLoader(javaClass.classLoader.getResource("main.fxml"))
         val root: Parent = loader.load()

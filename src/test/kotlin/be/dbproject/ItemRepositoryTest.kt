@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
 import javax.persistence.EntityManager
 import javax.persistence.Persistence
 
@@ -35,7 +36,7 @@ class ItemRepositoryTest {
             price = 19.99,
             description = "Test description",
             series = "Test Series",
-            releaseDate = "2023-01-01"
+            releaseDate = LocalDate.now()
         )
 
         itemRepository.addEntity(item)
@@ -54,7 +55,7 @@ class ItemRepositoryTest {
             price = 19.99,
             description = "Test description",
             series = "Test Series",
-            releaseDate = "2023-01-01"
+            releaseDate = LocalDate.now()
         )
 
         val item2 = Item(
@@ -67,7 +68,7 @@ class ItemRepositoryTest {
             price = 19.99,
             description = "Test description",
             series = "Test Series",
-            releaseDate = "2023-01-01"
+            releaseDate = LocalDate.now()
         )
 
         itemRepository.addEntity(item1)
@@ -91,7 +92,7 @@ class ItemRepositoryTest {
             price = 19.99,
             description = "Test description",
             series = "Test Series",
-            releaseDate = "2023-01-01"
+            releaseDate = LocalDate.now()
         )
 
         itemRepository.addEntity(item)
@@ -112,7 +113,7 @@ class ItemRepositoryTest {
             price = 19.99,
             description = "Test description",
             series = "Test Series",
-            releaseDate = "2023-01-01"
+            releaseDate = LocalDate.now()
         )
 
         itemRepository.addEntity(item)
@@ -142,7 +143,7 @@ class ItemRepositoryTest {
             price = 19.99,
             description = "Test description",
             series = "Test Series",
-            releaseDate = "2023-01-01"
+            releaseDate = LocalDate.now()
         )
 
         itemRepository.addEntity(item)

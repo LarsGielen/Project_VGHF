@@ -11,4 +11,8 @@ data class Genre(
 
     @Column
     var name: String
-)
+) {
+    override fun toString(): String {
+        return name
+    }
+}

@@ -142,7 +142,7 @@ class ItemsTableController {
                         locationId = 0,
                         platformId = 0,
                         publisherId = 0,
-                        genreId = 0,
+                        genreId = genreComboBox.value.id,
                         typeId = 0
                     )
                     itemRepository.addEntity(newItem)
@@ -153,7 +153,6 @@ class ItemsTableController {
                     item.price = priceTextField.text.toDoubleOrNull() ?: 0.0
                     item.description = descriptionTextField.text
                     item.series = ""
-                    //TODO: data wordt nu omgezet naar een string
                     item.releaseDate = releaseDatePicker.value
 
                     itemRepository.updateEntity(item)
