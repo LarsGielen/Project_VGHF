@@ -2,6 +2,7 @@ package be.dbproject.controllers
 
 import be.dbproject.models.Genre
 import be.dbproject.models.Item
+import be.dbproject.models.ItemType
 import be.dbproject.repositories.ItemRepository
 import be.dbproject.repositories.GenreRepository
 import javafx.beans.property.ReadOnlyObjectWrapper
@@ -12,6 +13,7 @@ import javafx.scene.control.*
 import javafx.scene.layout.VBox
 import javafx.stage.Modality
 import javafx.stage.Stage
+import java.time.LocalDate
 import java.util.*
 
 class ItemsTableController {
@@ -68,7 +70,7 @@ class ItemsTableController {
     }
 
     @FXML
-    fun handleNewItem() = openItemDialog("Add Item", Item())
+    fun handleNewItem() = openItemDialog("Add Item", Item(0, 0, null, 0, null, "", 0.0, "", "", 0,LocalDate.now()))
 
     @FXML
     fun handleDeleteItem() {
@@ -109,22 +111,20 @@ class ItemsTableController {
         dialogStage.scene = Scene(dialogPane)
 
         val nameTextField = fxmlLoader.namespace["nameTextField"] as TextField
-        val typeTextField = fxmlLoader.namespace["typeTextField"] as TextField
+        val typeComboBox = fxmlLoader.namespace["typeComboBox"] as ComboBox<ItemType>
 
-        val genreComboBox = fxmlLoader.namespace["genreComboBox"] as ComboBox<String>
-        GenreRepository().addEntity(Genre(name = "Ding"))
-        genreComboBox.items.addAll(GenreRepository().getAllEntities().toString())
+        val genreComboBox = fxmlLoader.namespace["genreComboBox"] as ComboBox<Genre>
+        genreComboBox.items.addAll(GenreRepository().getAllEntities())
 
         val priceTextField = fxmlLoader.namespace["priceTextField"] as TextField
         val descriptionTextField = fxmlLoader.namespace["descriptionTextField"] as TextField
-        val seriesTextField = fxmlLoader.namespace["seriesTextField"] as TextField
-        val releaseDateTextField = fxmlLoader.namespace["releaseDateTextField"] as TextField
+        val seriesComboBox = fxmlLoader.namespace["seriesComboBox"] as ComboBox<String>
+        val releaseDatePicker = fxmlLoader.namespace["releaseDatePicker"] as DatePicker
 
         nameTextField.text = item.name
         priceTextField.text = item.price.toString()
         descriptionTextField.text = item.description
-        seriesTextField.text = item.series
-        releaseDateTextField.text = item.releaseDate
+
 
         val okButton = fxmlLoader.namespace["okButton"] as Button
         val cancelButton = fxmlLoader.namespace["cancelButton"] as Button
@@ -137,8 +137,8 @@ class ItemsTableController {
                         name = nameTextField.text,
                         price = priceTextField.text.toDoubleOrNull() ?: 0.0,
                         description = descriptionTextField.text,
-                        series = seriesTextField.text,
-                        releaseDate = releaseDateTextField.text,
+                        series = seriesComboBox.value.toString(),
+                        releaseDate = releaseDatePicker.value,
                         locationId = 0,
                         platformId = 0,
                         publisherId = 0,
@@ -152,8 +152,9 @@ class ItemsTableController {
                     item.name = nameTextField.text
                     item.price = priceTextField.text.toDoubleOrNull() ?: 0.0
                     item.description = descriptionTextField.text
-                    item.series = seriesTextField.text
-                    item.releaseDate = releaseDateTextField.text
+                    item.series = ""
+                    //TODO: data wordt nu omgezet naar een string
+                    item.releaseDate = releaseDatePicker.value
 
                     itemRepository.updateEntity(item)
                     tblItems.refresh()

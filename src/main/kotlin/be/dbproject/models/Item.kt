@@ -1,5 +1,6 @@
 package be.dbproject.models
 
+import java.time.LocalDate
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -41,7 +42,7 @@ data class Item(
     var genreId: Long,
 
     @Column
-    var releaseDate: String
+    var releaseDate: LocalDate
 ) {
-    constructor() : this(0, 0, null, 0, null, "", 0.0, "", "", 0,"")
+    //constructor() : this(0, 0, null, 0, null, "", 0.0, "", "", 0,"")
 }
