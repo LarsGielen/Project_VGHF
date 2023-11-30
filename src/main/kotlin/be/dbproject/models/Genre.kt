@@ -7,7 +7,7 @@ import javax.persistence.*
 data class Genre(
     @Id
     @GeneratedValue
-    var id: Long,
+    val id: Long = 0,
 
     @Column
     var name: String

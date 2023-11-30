@@ -30,7 +30,7 @@ class VisitorTableController {
 
         initTable()
     }
-
+    
     private fun initTable() {
         val colId = TableColumn<Visitor, Int>("ID")
         colId.setCellValueFactory { f -> ReadOnlyObjectWrapper(f.value.id) }

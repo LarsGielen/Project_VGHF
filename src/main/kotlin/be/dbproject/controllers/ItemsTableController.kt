@@ -112,14 +112,13 @@ class ItemsTableController {
         val typeTextField = fxmlLoader.namespace["typeTextField"] as TextField
 
         val genreComboBox = fxmlLoader.namespace["genreComboBox"] as ComboBox<String>
+        GenreRepository().addEntity(Genre(name = "Ding"))
         genreComboBox.items.addAll(GenreRepository().getAllEntities().toString())
 
         val priceTextField = fxmlLoader.namespace["priceTextField"] as TextField
         val descriptionTextField = fxmlLoader.namespace["descriptionTextField"] as TextField
         val seriesTextField = fxmlLoader.namespace["seriesTextField"] as TextField
         val releaseDateTextField = fxmlLoader.namespace["releaseDateTextField"] as TextField
-
-
 
         nameTextField.text = item.name
         priceTextField.text = item.price.toString()
@@ -132,6 +131,7 @@ class ItemsTableController {
 
         okButton.setOnAction {
             try {
+                // TODO: geen String gebruiken om status aan te geven
                 if (title == "Add Item") {
                     val newItem = Item(
                         name = nameTextField.text,

@@ -1,6 +1,7 @@
 package be.dbproject.repositories
 
 import be.dbproject.models.Genre
+import be.dbproject.models.Item
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -25,16 +26,15 @@ class GenreRepositoryTest {
 
     @Test
     fun `addGenre should add Genre`() {
-        val genre = Genre("test")
-
+        val genre = Genre(name = "Test")
         genreRepository.addEntity(genre)
         assertTrue(genre.id > 0 , "Genre should have been assigned an ID.")
     }
 
     @Test
     fun `getAllGenres should return all genres`() {
-        val genre1 = Genre(1, name = "Test Genre 1")
-        val genre2 = Genre(2, name = "Test Genre 2")
+        val genre1 = Genre(name = "Test Genre 1")
+        val genre2 = Genre(name = "Test Genre 2")
 
         genreRepository.addEntity(genre1)
         genreRepository.addEntity(genre2)
@@ -49,8 +49,8 @@ class GenreRepositoryTest {
     fun `getGenreByName should return genres with matching name`() {
         val genreName = "Test Genre"
 
-        val genre1 = Genre(3, name = genreName)
-        val genre2 = Genre(4, name = "Another Genre")
+        val genre1 = Genre(name = genreName)
+        val genre2 = Genre(name = "Another Genre")
 
         genreRepository.addEntity(genre1)
         genreRepository.addEntity(genre2)
@@ -62,7 +62,7 @@ class GenreRepositoryTest {
 
     @Test
     fun `given genre when updating properties and updateGenre then properties changed in DB`() {
-        val genre = Genre(5, name = "Test Genre")
+        val genre = Genre(name = "Test Genre")
 
         genreRepository.addEntity(genre)
 
@@ -79,7 +79,7 @@ class GenreRepositoryTest {
 
     @Test
     fun `deleteGenre should remove genre from the database`() {
-        val genre = Genre(6, name = "Genre to be deleted")
+        val genre = Genre(name = "Genre to be deleted")
 
         genreRepository.addEntity(genre)
         val genreId = genre.id
