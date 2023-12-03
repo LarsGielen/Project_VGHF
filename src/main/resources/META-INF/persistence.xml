@@ -12,15 +12,15 @@
         <class>be.dbproject.models.Publisher</class>
         <class>be.dbproject.models.Location</class>
         <class>be.dbproject.models.Platform</class>
-        <!-- Add other entity classes here-->
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:VGHF" />
             <property name="javax.persistence.jdbc.user" value="" />
             <property name="javax.persistence.jdbc.password" value="" />
-            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.database.action" value="none"/>
 
+            <property name="hibernate.connection.url" value="jdbc:sqlite:VGHF_db.sqlite" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.SQLiteDialect"/>
             <property name="hibernate.connection.autocommit" value="true"/>
             <property name="hibernate.show_sql" value="true"/>

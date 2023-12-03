@@ -1,7 +1,6 @@
 package be.dbproject.repositories
 
 import javax.persistence.EntityManager
-import javax.persistence.Persistence
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
@@ -9,7 +8,7 @@ import javax.persistence.criteria.Root
 
 //Dit werkt opeens niet meer: fun <T, V> Root<T>.get(prop: KProperty1<T, V>): Path<V> = this.get(prop.name)
 abstract class BaseRepository<T>(private val entityClass: Class<T>) {
-    protected val entityManager: EntityManager = Persistence.createEntityManagerFactory("be.dbproject").createEntityManager()
+    protected val entityManager: EntityManager = EntityManagerSingleton.instance
 
     fun addEntity(entity: T) {
         entityManager.transaction.begin()

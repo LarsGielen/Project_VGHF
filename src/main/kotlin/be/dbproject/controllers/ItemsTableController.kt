@@ -1,7 +1,9 @@
 package be.dbproject.controllers
 
-import be.dbproject.models.*
-import be.dbproject.repositories.*
+import be.dbproject.models.Item
+import be.dbproject.models.Location
+import be.dbproject.repositories.ItemRepository
+import be.dbproject.repositories.LocationRepository
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -10,12 +12,11 @@ import javafx.scene.control.*
 import javafx.scene.layout.VBox
 import javafx.stage.Modality
 import javafx.stage.Stage
-import java.time.LocalDate
 import java.util.*
 
 class ItemsTableController {
     private lateinit var itemRepository: ItemRepository
-    //Misschien de andere repo s ook als member maken
+    //Misschien de andere repo's ook als member maken
 
     @FXML
     private lateinit var tblItems: TableView<Item>
@@ -35,14 +36,8 @@ class ItemsTableController {
         btn2.setOnAction { handleDeleteItem() }
         btn3.setOnAction { handleEditItems() }
 
-        this.itemRepository = ItemRepository()
+        itemRepository = ItemRepository()
         initTable()
-        addDummyData()
-    }
-
-    private fun addDummyData() {
-        itemRepository.addEntity(Item(name =  "DummyItem", typeId = 5, publisherId = 1, platformId = 3, description = "Dummy description", genreId = 5, locationId = 2, price = 50.0, releaseDate = LocalDate.now(), series = "Dummy serie"))
-        PlatformRepository().addEntity(Platform(name = "Dummy Platform", releaseDate = LocalDate.now(), description = "Dummy description"))
     }
 
     private fun initTable() {
@@ -63,7 +58,8 @@ class ItemsTableController {
         }
 
         try {
-            tblItems.items.addAll(itemRepository.getAllEntities())
+            val items = itemRepository.getAllEntities()
+            tblItems.items.addAll(items)
         } catch (e: Exception) {
             e.printStackTrace()
             val alert = Alert(Alert.AlertType.ERROR, "Error loading items.")
@@ -72,7 +68,21 @@ class ItemsTableController {
     }
 
     @FXML
-    fun handleNewItem() = openItemDialog("Add Item", Item(0, 0, null, 0, 0, "", 0.0, "", "", 0, LocalDate.now()))
+    fun handleNewItem() = openItemDialog("Add Item",
+        Item(
+            0,
+            0,
+            null,
+            0,
+            0,
+            "",
+            0.0,
+            "",
+            "",
+            HashSet(),
+            Date()
+        )
+    )
 
     @FXML
     fun handleDeleteItem() {
@@ -123,6 +133,7 @@ class ItemsTableController {
         val descriptionTextField = fxmlLoader.namespace["descriptionTextField"] as TextField
         descriptionTextField.text = item.description
 
+        /*
         val typeComboBox = fxmlLoader.namespace["typeComboBox"] as ComboBox<ItemType>
         typeComboBox.items.addAll(TypeRepository().getAllEntities())
         typeComboBox.value = TypeRepository().getEntityById(item.typeId)
@@ -138,13 +149,13 @@ class ItemsTableController {
         val genreComboBox = fxmlLoader.namespace["genreComboBox"] as ComboBox<Genre>
         genreComboBox.items.addAll(GenreRepository().getAllEntities())
         genreComboBox.value = GenreRepository().getEntityById(item.genreId)
+        */
 
         val seriesTextField = fxmlLoader.namespace["seriesTextField"] as TextField
         seriesTextField.text = item.series
 
         val releaseDatePicker = fxmlLoader.namespace["releaseDatePicker"] as DatePicker
-        releaseDatePicker.value = item.releaseDate
-
+        //releaseDatePicker.value = item.releaseDate?.toInstant()!!.atZone(ZoneId.systemDefault()).toLocalDate()
         descriptionTextField.text = item.description
 
         val locationComboBox = fxmlLoader.namespace["locationComboBox"] as ComboBox<Location>
@@ -157,32 +168,31 @@ class ItemsTableController {
         okButton.setOnAction {
             try {
                 if (title == "Add Item") {
-                    val newItem = Item(
-                        name = nameTextField.text,
-                        price = priceTextField.text.toDoubleOrNull() ?: 0.0,
-                        description = descriptionTextField.text,
-                        series = seriesTextField.text,
-                        releaseDate = releaseDatePicker.value,
-                        locationId = locationComboBox.value.id,
-                        platformId = platformComboBox.value.id,
-                        publisherId = publisherComboBox.value.id,
-                        genreId = genreComboBox.value.id,
-                        typeId = typeComboBox.value.id
-                    )
-                    itemRepository.addEntity(newItem)
-                    val items = itemRepository.getAllEntities()
-                    tblItems.items.setAll(items)
+                    // val newItem = Item(
+                    //     name = nameTextField.text,
+                    //     price = priceTextField.text.toDoubleOrNull() ?: 0.0,
+                    //     description = descriptionTextField.text,
+                    //     series = seriesTextField.text,
+                    //     releaseDate = releaseDatePicker.value,
+                    //     locationId = locationComboBox.value.id,
+                    //     platformId = platformComboBox.value.id,
+                    //     publisherId = publisherComboBox.value.id,
+                    //     genreId = genreComboBox.value.id,
+                    //     typeId = typeComboBox.value.id
+                    // )
+                    // itemRepository.addEntity(newItem)
+                    // val items = itemRepository.getAllEntities()
+                    // tblItems.items.setAll(items)
                 } else if (title == "Edit Item") {
-                    item.name = nameTextField.text
-                    item.price = priceTextField.text.toDoubleOrNull() ?: 0.0
-                    item.description = descriptionTextField.text
-                    item.series = seriesTextField.text
-                    item.releaseDate = releaseDatePicker.value
-                    item.genreId = genreComboBox.value.id
-                    item.typeId = typeComboBox.value.id
-
-                    itemRepository.updateEntity(item)
-                    tblItems.refresh()
+                    // item.name = nameTextField.text
+                    // item.price = priceTextField.text.toDoubleOrNull() ?: 0.0
+                    // item.description = descriptionTextField.text
+                    // item.series = seriesTextField.text
+                    // item.releaseDate = releaseDatePicker.value
+                    // item.genreId = genreComboBox.value.id
+                    // item.typeId = typeComboBox.value.id
+                    // itemRepository.updateEntity(item)
+                    // tblItems.refresh()
                 }
 
                 dialogStage.close()

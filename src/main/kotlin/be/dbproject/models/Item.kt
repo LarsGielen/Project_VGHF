@@ -1,11 +1,7 @@
 package be.dbproject.models
 
-import java.time.LocalDate
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.Table
+import java.util.*
+import javax.persistence.*
 
 @Entity
 @Table(name = "Item")
@@ -38,11 +34,17 @@ data class Item(
     @Column
     var series: String,
 
-    @Column
-    var genreId: Long,
+    @ManyToMany
+    @JoinTable(
+        name = "ItemGenreLink",
+        joinColumns = [JoinColumn(name = "itemid")],
+        inverseJoinColumns = [JoinColumn(name = "genreid")]
+    )
+    var genres: Set<Genre> = HashSet(),
 
     @Column
-    var releaseDate: LocalDate
+    @Temporal(TemporalType.DATE)
+    var releaseDate: Date
 ) {
     //constructor() : this(0, 0, null, 0, null, "", 0.0, "", "", 0,"")
 }
