@@ -11,6 +11,7 @@
         <class>be.dbproject.models.ItemType</class>
         <class>be.dbproject.models.Publisher</class>
         <class>be.dbproject.models.Location</class>
+        <class>be.dbproject.models.LocationType</class>
         <class>be.dbproject.models.Platform</class>
 
         <properties>

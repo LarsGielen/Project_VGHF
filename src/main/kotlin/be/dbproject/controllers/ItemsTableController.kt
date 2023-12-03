@@ -1,9 +1,7 @@
 package be.dbproject.controllers
 
-import be.dbproject.models.Item
-import be.dbproject.models.Location
+import be.dbproject.models.*
 import be.dbproject.repositories.ItemRepository
-import be.dbproject.repositories.LocationRepository
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -12,11 +10,11 @@ import javafx.scene.control.*
 import javafx.scene.layout.VBox
 import javafx.stage.Modality
 import javafx.stage.Stage
+import java.time.LocalDate
 import java.util.*
 
 class ItemsTableController {
     private lateinit var itemRepository: ItemRepository
-    //Misschien de andere repo's ook als member maken
 
     @FXML
     private lateinit var tblItems: TableView<Item>
@@ -37,6 +35,7 @@ class ItemsTableController {
         btn3.setOnAction { handleEditItems() }
 
         itemRepository = ItemRepository()
+
         initTable()
     }
 
@@ -70,17 +69,15 @@ class ItemsTableController {
     @FXML
     fun handleNewItem() = openItemDialog("Add Item",
         Item(
-            0,
-            0,
-            null,
-            0,
-            0,
+            ItemType("None"),
+            Platform("", "", LocalDate.now()),
+            Location(LocationType("None"), "", "", "", "", ""),
+            Publisher("", "", ""),
             "",
             0.0,
             "",
             "",
-            HashSet(),
-            Date()
+            LocalDate.now()
         )
     )
 
@@ -149,7 +146,6 @@ class ItemsTableController {
         val genreComboBox = fxmlLoader.namespace["genreComboBox"] as ComboBox<Genre>
         genreComboBox.items.addAll(GenreRepository().getAllEntities())
         genreComboBox.value = GenreRepository().getEntityById(item.genreId)
-        */
 
         val seriesTextField = fxmlLoader.namespace["seriesTextField"] as TextField
         seriesTextField.text = item.series
@@ -161,6 +157,7 @@ class ItemsTableController {
         val locationComboBox = fxmlLoader.namespace["locationComboBox"] as ComboBox<Location>
         locationComboBox.items.addAll(LocationRepository().getAllEntities())
         locationComboBox.value = LocationRepository().getEntityById(item.locationId)
+        */
 
         val okButton = fxmlLoader.namespace["okButton"] as Button
         val cancelButton = fxmlLoader.namespace["cancelButton"] as Button

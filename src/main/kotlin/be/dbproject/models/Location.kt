@@ -5,12 +5,9 @@ import javax.persistence.*
 @Entity
 @Table(name = "Location")
 data class Location(
-    @Id
-    @GeneratedValue
-    val id: Long = 0,
-
-    @Column
-    val locationType: Int,
+    @ManyToOne
+    @JoinColumn(name = "locationType")
+    val locationType: LocationType,
 
     @Column
     val locationName: String,
@@ -27,3 +24,8 @@ data class Location(
     @Column
     val houseNumber: String
 )
+{
+    @Id
+    @GeneratedValue
+    val id: Long = 0
+}

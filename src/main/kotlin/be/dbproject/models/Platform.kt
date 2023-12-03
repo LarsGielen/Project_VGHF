@@ -6,10 +6,6 @@ import javax.persistence.*
 @Entity
 @Table(name = "Platform")
 data class Platform(
-    @Id
-    @GeneratedValue
-    val id: Long = 0,
-
     @Column
     val name: String,
 
@@ -19,3 +15,8 @@ data class Platform(
     @Column
     val releaseDate: LocalDate
 )
+{
+    @Id
+    @GeneratedValue
+    val id: Long = 0
+}

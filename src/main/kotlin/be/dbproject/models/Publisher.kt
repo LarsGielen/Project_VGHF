@@ -5,10 +5,6 @@ import javax.persistence.*
 @Entity
 @Table(name = "Publisher")
 data class Publisher(
-    @Id
-    @GeneratedValue
-    val id: Long = 0,
-
     @Column
     val name: String,
 
@@ -18,3 +14,8 @@ data class Publisher(
     @Column
     val website: String?
 )
+{
+    @Id
+    @GeneratedValue
+    val id: Long = 0
+}

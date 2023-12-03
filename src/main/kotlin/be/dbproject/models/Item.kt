@@ -1,50 +1,44 @@
 package be.dbproject.models
 
-import java.util.*
+import java.time.LocalDate
 import javax.persistence.*
 
 @Entity
 @Table(name = "Item")
-data class Item(
+data class Item (
+    @ManyToOne
+    @JoinColumn(name = "typeid", nullable = false)
+    val itemType: ItemType,
+
+    @ManyToOne
+    @JoinColumn(name = "platformid")
+    val platform: Platform? = null,
+
+    @ManyToOne
+    @JoinColumn(name = "locationid", nullable = false)
+    val location: Location,
+
+    @ManyToOne
+    @JoinColumn(name = "publisherid")
+    val publisher: Publisher? = null,
+
+    @Column(name = "name", nullable = false)
+    val name: String,
+
+    @Column(name = "price", nullable = false)
+    val price: Double,
+
+    @Column(name = "description", nullable = false)
+    val description: String,
+
+    @Column(name = "series", nullable = false)
+    val series: String,
+
+    @Column(name = "releaseDate", nullable = false)
+    val releaseDate: LocalDate
+)
+{
     @Id
-    @GeneratedValue
-    val id: Long = 0,
-
-    @Column
-    var typeId: Long,
-
-    @Column
-    val platformId: Long?,
-
-    @Column
-    val locationId: Long,
-
-    @Column
-    val publisherId: Long,
-
-    @Column
-    var name: String,
-
-    @Column
-    var price: Double,
-
-    @Column
-    var description: String,
-
-    @Column
-    var series: String,
-
-    @ManyToMany
-    @JoinTable(
-        name = "ItemGenreLink",
-        joinColumns = [JoinColumn(name = "itemid")],
-        inverseJoinColumns = [JoinColumn(name = "genreid")]
-    )
-    var genres: Set<Genre> = HashSet(),
-
-    @Column
-    @Temporal(TemporalType.DATE)
-    var releaseDate: Date
-) {
-    //constructor() : this(0, 0, null, 0, null, "", 0.0, "", "", 0,"")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0
 }
