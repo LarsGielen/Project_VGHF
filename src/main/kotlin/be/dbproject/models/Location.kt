@@ -28,4 +28,8 @@ data class Location(
     @Id
     @GeneratedValue
     val id: Long = 0
+
+    override fun toString(): String {
+        return "$locationType : $locationName"
+    }
 }

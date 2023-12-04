@@ -19,4 +19,8 @@ data class Platform(
     @Id
     @GeneratedValue
     val id: Long = 0
+
+    override fun toString() : String{
+        return name
+    }
 }
