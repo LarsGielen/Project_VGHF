@@ -77,7 +77,8 @@ class ItemsTableController {
             0.0,
             "",
             "",
-            LocalDate.now()
+            LocalDate.now(),
+            HashSet()
         )
     )
 
@@ -142,9 +143,8 @@ class ItemsTableController {
         publisherComboBox.items.addAll(PublisherRepository().getAllEntities())
         publisherComboBox.value = item.publisher
 
-        // val genreComboBox = fxmlLoader.namespace["genreComboBox"] as ComboBox<Genre>
-        // genreComboBox.items.addAll(GenreRepository().getAllEntities())
-        // genreComboBox.value =
+        val genreComboBox = fxmlLoader.namespace["genreComboBox"] as ComboBox<Genre>
+        genreComboBox.items.addAll(GenreRepository().getAllEntities())
 
         val seriesTextField = fxmlLoader.namespace["seriesTextField"] as TextField
         seriesTextField.text = item.series
@@ -172,7 +172,8 @@ class ItemsTableController {
                         priceTextField.text.toDouble(),
                         descriptionTextField.text,
                         seriesTextField.text,
-                        releaseDatePicker.value
+                        releaseDatePicker.value,
+                        HashSet() // TODO: Give multiple genres
                     )
                     itemRepository.addEntity(newItem)
                     tblItems.items.add(newItem)

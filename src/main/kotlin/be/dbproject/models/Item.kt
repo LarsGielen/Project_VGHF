@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "Item")
-data class Item (
+data class Item(
     @ManyToOne
     @JoinColumn(name = "typeid", nullable = false)
     val itemType: ItemType,
@@ -35,7 +35,15 @@ data class Item (
     val series: String,
 
     @Column(name = "releaseDate", nullable = false)
-    val releaseDate: LocalDate
+    val releaseDate: LocalDate,
+
+    @ManyToMany
+    @JoinTable(
+        name = "ItemGenreLink",
+        joinColumns = [JoinColumn(name = "itemid")],
+        inverseJoinColumns = [JoinColumn(name = "genreid")]
+    )
+    var genres: Set<Genre>
 )
 {
     @Id
