@@ -145,6 +145,7 @@ class ItemsTableController {
 
         val genreComboBox = fxmlLoader.namespace["genreComboBox"] as ComboBox<Genre>
         genreComboBox.items.addAll(GenreRepository().getAllEntities())
+        genreComboBox.value = item.genres.firstOrNull()
 
         val seriesTextField = fxmlLoader.namespace["seriesTextField"] as TextField
         seriesTextField.text = item.series
@@ -173,7 +174,7 @@ class ItemsTableController {
                         descriptionTextField.text,
                         seriesTextField.text,
                         releaseDatePicker.value,
-                        HashSet() // TODO: Give multiple genres
+                        hashSetOf(genreComboBox.value)
                     )
                     itemRepository.addEntity(newItem)
                     tblItems.items.add(newItem)

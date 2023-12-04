@@ -8,7 +8,7 @@ import javax.persistence.*
 data class Item(
     @ManyToOne
     @JoinColumn(name = "typeid", nullable = false)
-    val itemType: ItemType,
+    var itemType: ItemType,
 
     @ManyToOne
     @JoinColumn(name = "platformid")
@@ -23,19 +23,19 @@ data class Item(
     val publisher: Publisher? = null,
 
     @Column(name = "name", nullable = false)
-    val name: String,
+    var name: String,
 
     @Column(name = "price", nullable = false)
-    val price: Double,
+    var price: Double,
 
     @Column(name = "description", nullable = false)
-    val description: String,
+    var description: String,
 
     @Column(name = "series", nullable = false)
-    val series: String,
+    var series: String,
 
     @Column(name = "releaseDate", nullable = false)
-    val releaseDate: LocalDate,
+    var releaseDate: LocalDate,
 
     @ManyToMany
     @JoinTable(
