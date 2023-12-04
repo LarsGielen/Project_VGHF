@@ -101,9 +101,9 @@ INSERT INTO ItemType (name) VALUES
     ('Toys');
 
 INSERT INTO Platform (name, description, releaseDate) VALUES
-    ('PlayStation 4', 'Gaming Console by Sony', '15-11-2013'),
-    ('PC', 'Gaming Console by Microsoft', '12-08-1981'),
-    ('Wii', 'Gaming Console by Nintendo', '19-11-2006');
+    ('PlayStation 4', 'Gaming Console by Sony', 1384470000000), -- releaseDate = 15-11-2013
+    ('PC', 'Gaming Console by Microsoft', 366415200000),		-- releaseDate = 12-08-1981
+    ('Wii', 'Gaming Console by Nintendo', 1163890800000);		-- releaseDate = 19-11-2006
 
 INSERT INTO LocationType (name) VALUES
     ('Museum'),
@@ -126,9 +126,9 @@ INSERT INTO Location (locationType, locationName, country, city, street, houseNu
     (3, 'House 1', 'Belgium', 'Diepenbeek', 'Agoralaan', 789);
 
 INSERT INTO Item (name, price, description, typeid, platformid, series, publisherid, releaseDate, locationid) VALUES
-    ('The Legend of Zelda: Breath of the Wild', 59.99, 'A game', 1, 1, 'Zelda', 1, '03-03-2017', 1),
-    ('Learn to Tetris', 6.99, 'A guide for Tetris', 2, NULL, 'Tetris', NULL, '04-12-1984', 2),
-    ('Zelda figurine: Link', 19.99, 'A figurine of Link from Zelda', 3, NULL, 'Zelda', NULL, '12-10-2017', 1);
+    ('The Legend of Zelda: Breath of the Wild', 59.99, 'A game', 1, 1, 'Zelda', 1, 1488495600000, 1),			-- releaseDate = 03-03-2017
+    ('Learn to Tetris', 6.99, 'A guide for Tetris', 2, NULL, 'Tetris', NULL, 470962800000, 2),					-- releaseDate = 04-12-1984
+    ('Zelda figurine: Link', 19.99, 'A figurine of Link from Zelda', 3, NULL, 'Zelda', NULL, 1507759200000, 1);	-- releaseDate = 12-10-2017
 	
 INSERT INTO ItemGenreLink (itemid, genreid) VALUES
 	(1, 1),
@@ -140,6 +140,6 @@ INSERT INTO Visitor (firstName, lastName, phone, email, locationID) VALUES
     ('Wouter', 'Groeneveld', '555-123-4567', 'Wouter.Groeneveld@example.com', 3);
 
 INSERT INTO VisitorLog (locationid, visitorid, date, donation) VALUES
-    (1, 1, '2022-04-02', 20.00),
-    (1, 2, '2022-05-16', 0),
-    (1, 3, '2022-06-21', 15.00);
+    (1, 1, 1701385200000, 20.00),
+    (1, 2, 1701385200000, 0),
+    (1, 3, 1701385200000, 15.00);

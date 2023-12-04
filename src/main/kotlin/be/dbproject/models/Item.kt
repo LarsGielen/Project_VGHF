@@ -1,26 +1,52 @@
 package be.dbproject.models
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
-import javax.persistence.Table
+import java.time.LocalDate
+import javax.persistence.*
 
 @Entity
-@Table(name = "item")
+@Table(name = "Item")
 data class Item(
-    @Id
-    @GeneratedValue()
-    val id: Long = 0,
+    @ManyToOne
+    @JoinColumn(name = "typeid", nullable = false)
+    val itemType: ItemType,
 
-    val typeId: Int,
-    val platformId: Int?,
-    val locationId: Int,
-    val publisherId: Int?,
+    @ManyToOne
+    @JoinColumn(name = "platformid")
+    val platform: Platform? = null,
+
+    @ManyToOne
+    @JoinColumn(name = "locationid", nullable = false)
+    val location: Location,
+
+    @ManyToOne
+    @JoinColumn(name = "publisherid")
+    val publisher: Publisher? = null,
+
+    @Column(name = "name", nullable = false)
     val name: String,
+
+    @Column(name = "price", nullable = false)
     val price: Double,
+
+    @Column(name = "description", nullable = false)
     val description: String,
+
+    @Column(name = "series", nullable = false)
     val series: String,
-    val releaseDate: String
-) {
-    constructor() : this(0, 0, null, 0, null, "", 0.0, "", "", "")
+
+    @Column(name = "releaseDate", nullable = false)
+    val releaseDate: LocalDate,
+
+    @ManyToMany
+    @JoinTable(
+        name = "ItemGenreLink",
+        joinColumns = [JoinColumn(name = "itemid")],
+        inverseJoinColumns = [JoinColumn(name = "genreid")]
+    )
+    var genres: Set<Genre>
+)
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0
 }

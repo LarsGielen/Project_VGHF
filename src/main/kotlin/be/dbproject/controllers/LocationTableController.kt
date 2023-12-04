@@ -31,13 +31,9 @@ class LocationTableController {
     }
 
     private fun initTable() {
-        val colId = TableColumn<Location, Int>("ID")
+        val colId = TableColumn<Location, Long>("ID")
         colId.setCellValueFactory { f -> ReadOnlyObjectWrapper(f.value.id) }
-
         tblLocations.columns.addAll(colId)
-        for (i in 0..<10) {
-            tblLocations.items.add(Location(i,i, "locationNameTest", "countryTest", "cityTest", "streetTest" , "houseNumberTest"))
-        }
     }
 
     @FXML

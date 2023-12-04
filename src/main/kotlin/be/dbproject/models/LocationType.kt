@@ -1,6 +1,15 @@
 package be.dbproject.models
 
+import javax.persistence.*
+
+@Entity
+@Table(name = "LocationType")
 data class LocationType(
-    val id: Int,
+    @Column
     val name: String
 )
+{
+    @Id
+    @GeneratedValue
+    val id: Long = 0
+}

@@ -1,11 +1,31 @@
 package be.dbproject.models
 
+import javax.persistence.*
+
+@Entity
+@Table(name = "Location")
 data class Location(
-    val id: Int,
-    val locationType: Int,
+    @ManyToOne
+    @JoinColumn(name = "locationType")
+    val locationType: LocationType,
+
+    @Column
     val locationName: String,
+
+    @Column
     val country: String,
+
+    @Column
     val city: String,
+
+    @Column
     val street: String,
+
+    @Column
     val houseNumber: String
 )
+{
+    @Id
+    @GeneratedValue
+    val id: Long = 0
+}

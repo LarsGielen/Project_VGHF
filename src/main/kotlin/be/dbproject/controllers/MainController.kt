@@ -1,9 +1,9 @@
 package be.dbproject.controllers
 
 import be.dbproject.ProjectMain
-
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
+import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Button
 import javafx.scene.layout.AnchorPane
@@ -46,7 +46,9 @@ class MainController {
         println("Item Details button clicked")
         try {
             val stage = Stage()
-            val root = FXMLLoader.load<Any>(javaClass.classLoader.getResource("ItemsTableView.fxml")) as AnchorPane
+            val loader = FXMLLoader(javaClass.classLoader.getResource("ItemsTableView.fxml"))
+            val root: Parent = loader.load()
+
             val scene = Scene(root)
 
             stage.setScene(scene)
@@ -54,7 +56,6 @@ class MainController {
             stage.initOwner(ProjectMain.rootStage)
             stage.initModality(Modality.WINDOW_MODAL)
             stage.show()
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
