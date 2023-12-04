@@ -4,9 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane minWidth="8.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.dbproject.controllers.ItemsTableController">
-   <VBox prefHeight="400.0" prefWidth="755.0">
-      <TableView fx:id="tblItems">
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.dbproject.controllers.ItemsTableController">
+   <VBox prefHeight="400.0" prefWidth="755.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+      <TableView fx:id="tblItems" VBox.vgrow="ALWAYS">
          <columns>
          </columns>
       </TableView>

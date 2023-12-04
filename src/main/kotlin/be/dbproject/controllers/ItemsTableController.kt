@@ -35,7 +35,6 @@ class ItemsTableController {
         btn3.setOnAction { handleEditItems() }
 
         itemRepository = ItemRepository()
-
         initTable()
     }
 
