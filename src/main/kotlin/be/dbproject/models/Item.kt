@@ -1,5 +1,6 @@
 package be.dbproject.models
 
+import javafx.collections.ObservableList
 import java.time.LocalDate
 import javax.persistence.*
 
@@ -12,15 +13,15 @@ data class Item(
 
     @ManyToOne
     @JoinColumn(name = "platformid")
-    val platform: Platform? = null,
+    var platform: Platform? = null,
 
     @ManyToOne
     @JoinColumn(name = "locationid", nullable = false)
-    val location: Location,
+    var location: Location,
 
     @ManyToOne
     @JoinColumn(name = "publisherid")
-    val publisher: Publisher? = null,
+    var publisher: Publisher? = null,
 
     @Column(name = "name", nullable = false)
     var name: String,

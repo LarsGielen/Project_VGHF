@@ -3,6 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.CheckComboBox?>
 
 <VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
     <GridPane vgap="5">
@@ -28,7 +29,7 @@
         <TextField fx:id="seriesTextField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
         <Label text="Genre:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-        <ComboBox fx:id="genreComboBox" prefWidth="175" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+        <CheckComboBox fx:id="genreCheckComboBox" prefWidth="175" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
         <Label text="Release Date:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
         <DatePicker fx:id="releaseDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="8" />
@@ -37,16 +38,13 @@
         <ComboBox fx:id="locationComboBox" prefWidth="175" GridPane.columnIndex="1" GridPane.rowIndex="9" />
     </GridPane>
 
-
-
     <HBox alignment="CENTER" spacing="10">
         <Button fx:id="okButton" prefHeight="26.0" prefWidth="89.0" text="OK" />
         <Button fx:id="cancelButton" prefHeight="26.0" prefWidth="100.0" text="Cancel" />
 
-      <VBox.margin>
+        <VBox.margin>
          <Insets bottom="10.0" />
-      </VBox.margin>
-
+        </VBox.margin>
     </HBox>
 
    <padding>
