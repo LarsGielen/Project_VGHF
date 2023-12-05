@@ -1,15 +1,12 @@
 package be.dbproject.models
 
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Table
 
 @Entity
 @Table(name = "Visitor")
 data class Visitor(
-    @Id
-    @Column
-    @GeneratedValue
-    val id: Long = 0,
-
     @Column
     val firstName: String,
 
@@ -24,4 +21,4 @@ data class Visitor(
 
     @Column
     val locationId: Int
-)
+) : DataBaseModel()

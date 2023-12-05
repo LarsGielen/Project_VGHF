@@ -1,18 +1,16 @@
 package be.dbproject.models
 
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Table
 
 @Entity
 @Table(name = "LocationType")
 data class LocationType(
     @Column
     val name: String
-)
+) : DataBaseModel()
 {
-    @Id
-    @GeneratedValue
-    val id: Long = 0
-
     override fun toString(): String {
         return name
     }

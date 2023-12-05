@@ -1,14 +1,12 @@
 package be.dbproject.models
 
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Table
 
 @Entity
 @Table(name = "VisitorLog")
 data class VisitorLog(
-    @Id
-    @GeneratedValue
-    val locationId: Long = 0,
-
     @Column
     val visitorId: Int,
 
@@ -17,4 +15,4 @@ data class VisitorLog(
 
     @Column
     val donation: Double
-)
+) : DataBaseModel()

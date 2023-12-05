@@ -1,19 +1,16 @@
 package be.dbproject.repositories
 
+import be.dbproject.models.DataBaseModel
 import javax.persistence.EntityManager
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
 
-
-//Dit werkt opeens niet meer: fun <T, V> Root<T>.get(prop: KProperty1<T, V>): Path<V> = this.get(prop.name)
-abstract class BaseRepository<T>(private val entityClass: Class<T>) {
+class Repository<T : DataBaseModel>(private val entityClass: Class<T>) {
     protected val entityManager: EntityManager = EntityManagerSingleton.instance
 
     fun addEntity(entity: T) {
-        entityManager.transaction.begin()
-        entityManager.persist(entity)
-        entityManager.transaction.commit()
+        withTransaction { entityManager.persist(entity) }
     }
 
     fun getAllEntities(): List<T> {
@@ -28,17 +25,29 @@ abstract class BaseRepository<T>(private val entityClass: Class<T>) {
         return entityManager.find(entityClass, entityId)
     }
 
+    fun getEntityByColumn(column: String, searchString: String): List<T> {
+        val criteriaBuilder: CriteriaBuilder = entityManager.criteriaBuilder
+        val query: CriteriaQuery<T> = criteriaBuilder.createQuery(entityClass)
+        val root: Root<T>? = query.from(entityClass)
+
+        query.select(root)
+        root?.let {
+            query.where(criteriaBuilder.equal(it.get<String>(column), searchString))
+        }
+
+        return entityManager.createQuery(query).resultList
+    }
+
     fun updateEntity(entity: T) {
         withTransaction { entityManager.merge(entity) }
     }
 
-    fun deleteEntity(entityId: Long) {
-        entityManager.transaction.begin()
-        val entity: T? = entityManager.find(entityClass, entityId)
-        if (entity != null) {
-            entityManager.remove(entity)
+    fun deleteEntity(entity: T) {
+        withTransaction {
+            entityManager.find(entityClass, entity.id)?.let {
+                entityManager.remove(it)
+            }
         }
-        entityManager.transaction.commit()
     }
 
     private fun withTransaction(action: () -> Unit) {

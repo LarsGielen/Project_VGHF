@@ -44,9 +44,4 @@ data class Item(
         inverseJoinColumns = [JoinColumn(name = "genreid")]
     )
     var genres: Set<Genre>
-)
-{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0
-}
+) : DataBaseModel()

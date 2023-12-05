@@ -1,17 +1,16 @@
 package be.dbproject.models
 
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Table
 
 @Entity
 @Table(name = "ItemType")
 data class ItemType(
     @Column
     val name: String
-) {
-    @Id
-    @GeneratedValue
-    val id: Long = 0
-
+) : DataBaseModel()
+{
     override fun toString(): String {
         return name
     }

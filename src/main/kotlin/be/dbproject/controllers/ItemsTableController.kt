@@ -1,7 +1,7 @@
 package be.dbproject.controllers
 
 import be.dbproject.models.*
-import be.dbproject.repositories.*
+import be.dbproject.repositories.Repository
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
@@ -14,7 +14,7 @@ import java.time.LocalDate
 import java.util.*
 
 class ItemsTableController {
-    private lateinit var itemRepository: ItemRepository
+    private lateinit var repository: Repository<Item>
 
     @FXML
     private lateinit var tblItems: TableView<Item>
@@ -34,7 +34,8 @@ class ItemsTableController {
         btn2.setOnAction { handleDeleteItem() }
         btn3.setOnAction { handleEditItems() }
 
-        itemRepository = ItemRepository()
+        repository = Repository(Item::class.java)
+
         initTable()
     }
 
@@ -56,7 +57,7 @@ class ItemsTableController {
         }
 
         try {
-            val items = itemRepository.getAllEntities()
+            val items = repository.getAllEntities()
             tblItems.items.addAll(items)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -87,7 +88,7 @@ class ItemsTableController {
 
         if (selectedItem != null) {
             try {
-                itemRepository.deleteEntity(selectedItem.id)
+                repository.deleteEntity(selectedItem)
                 tblItems.items.remove(selectedItem)
             } catch (e: Exception) {
                 val alert = Alert(Alert.AlertType.ERROR, "Error deleting item.")
@@ -131,19 +132,19 @@ class ItemsTableController {
         descriptionTextField.text = item.description
 
         val typeComboBox = fxmlLoader.namespace["typeComboBox"] as ComboBox<ItemType>
-        typeComboBox.items.addAll(TypeRepository().getAllEntities())
+        typeComboBox.items.addAll(Repository(ItemType::class.java).getAllEntities())
         typeComboBox.value = item.itemType
 
         val platformComboBox = fxmlLoader.namespace["platformComboBox"] as ComboBox<Platform>
-        platformComboBox.items.addAll(PlatformRepository().getAllEntities())
+        platformComboBox.items.addAll(Repository(Platform::class.java).getAllEntities())
         platformComboBox.value = item.platform
 
         val publisherComboBox = fxmlLoader.namespace["publisherComboBox"] as ComboBox<Publisher>
-        publisherComboBox.items.addAll(PublisherRepository().getAllEntities())
+        publisherComboBox.items.addAll(Repository(Publisher::class.java).getAllEntities())
         publisherComboBox.value = item.publisher
 
         val genreComboBox = fxmlLoader.namespace["genreComboBox"] as ComboBox<Genre>
-        genreComboBox.items.addAll(GenreRepository().getAllEntities())
+        genreComboBox.items.addAll(Repository(Genre::class.java).getAllEntities())
 
         val seriesTextField = fxmlLoader.namespace["seriesTextField"] as TextField
         seriesTextField.text = item.series
@@ -153,7 +154,7 @@ class ItemsTableController {
         descriptionTextField.text = item.description
 
         val locationComboBox = fxmlLoader.namespace["locationComboBox"] as ComboBox<Location>
-        locationComboBox.items.addAll(LocationRepository().getAllEntities())
+        locationComboBox.items.addAll(Repository(Location::class.java).getAllEntities())
         locationComboBox.value = item.location
 
         val okButton = fxmlLoader.namespace["okButton"] as Button
@@ -174,7 +175,7 @@ class ItemsTableController {
                         releaseDatePicker.value,
                         HashSet() // TODO: Give multiple genres
                     )
-                    itemRepository.addEntity(newItem)
+                    repository.addEntity(newItem)
                     tblItems.items.add(newItem)
                 } else if (title == "Edit Item") {
                     // item.name = nameTextField.text
