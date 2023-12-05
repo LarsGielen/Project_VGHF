@@ -10,6 +10,7 @@ import javafx.scene.control.*
 import javafx.scene.layout.VBox
 import javafx.stage.Modality
 import javafx.stage.Stage
+import org.controlsfx.control.CheckComboBox
 import java.time.LocalDate
 import java.util.*
 
@@ -78,7 +79,7 @@ class ItemsTableController {
             "",
             "",
             LocalDate.now(),
-            HashSet()
+            hashSetOf()
         )
     )
 
@@ -143,8 +144,9 @@ class ItemsTableController {
         publisherComboBox.items.addAll(Repository(Publisher::class.java).getAllEntities())
         publisherComboBox.value = item.publisher
 
-        val genreComboBox = fxmlLoader.namespace["genreComboBox"] as ComboBox<Genre>
-        genreComboBox.items.addAll(Repository(Genre::class.java).getAllEntities())
+        val genreCheckComboBox = fxmlLoader.namespace["genreCheckComboBox"] as CheckComboBox<Genre>
+        genreCheckComboBox.items.addAll(Repository(Genre::class.java).getAllEntities())
+        item.genres.forEach { genreCheckComboBox.checkModel.check(it) }
 
         val seriesTextField = fxmlLoader.namespace["seriesTextField"] as TextField
         seriesTextField.text = item.series
@@ -169,24 +171,28 @@ class ItemsTableController {
                         locationComboBox.value,
                         publisherComboBox.value,
                         nameTextField.text,
-                        priceTextField.text.toDouble(),
+                        priceTextField.text.toDoubleOrNull()  ?: 0.0,
                         descriptionTextField.text,
                         seriesTextField.text,
                         releaseDatePicker.value,
-                        HashSet() // TODO: Give multiple genres
+                        genreCheckComboBox.checkModel.checkedItems.toHashSet()
                     )
                     repository.addEntity(newItem)
                     tblItems.items.add(newItem)
                 } else if (title == "Edit Item") {
-                    // item.name = nameTextField.text
-                    // item.price = priceTextField.text.toDoubleOrNull() ?: 0.0
-                    // item.description = descriptionTextField.text
-                    // item.series = seriesTextField.text
-                    // item.releaseDate = releaseDatePicker.value
-                    // item.genreId = genreComboBox.value.id
-                    // item.typeId = typeComboBox.value.id
-                    // itemRepository.updateEntity(item)
-                    // tblItems.refresh()
+                    item.name = nameTextField.text
+                    item.location = locationComboBox.value
+                    item.publisher = publisherComboBox.value
+                    item.platform = platformComboBox.value
+                    item.price = priceTextField.text.toDoubleOrNull() ?: 0.0
+                    item.description = descriptionTextField.text
+                    item.series = seriesTextField.text
+                    item.releaseDate = releaseDatePicker.value
+                    item.genres = genreCheckComboBox.checkModel.checkedItems.toHashSet()
+                    item.itemType = typeComboBox.value
+
+                    repository.updateEntity(item)
+                    tblItems.refresh()
                 }
 
                 dialogStage.close()
