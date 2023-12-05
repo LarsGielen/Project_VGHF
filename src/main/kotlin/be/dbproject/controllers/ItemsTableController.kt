@@ -79,7 +79,7 @@ class ItemsTableController {
             "",
             "",
             LocalDate.now(),
-            HashSet()
+            hashSetOf()
         )
     )
 
