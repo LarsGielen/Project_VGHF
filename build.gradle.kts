@@ -24,6 +24,7 @@ dependencies {
     implementation("org.hibernate:hibernate-core:5.4.23.Final")
     implementation("org.xerial:sqlite-jdbc:3.32.3.2")
     implementation("com.zsoltfabok:sqlite-dialect:1.0")
+    implementation("org.controlsfx:controlsfx:11.2.0")
 
     testImplementation(kotlin("test"))
 }
