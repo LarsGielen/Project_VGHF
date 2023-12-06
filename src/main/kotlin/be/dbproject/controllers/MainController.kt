@@ -1,6 +1,7 @@
 package be.dbproject.controllers
 
 import be.dbproject.ProjectMain
+import be.dbproject.models.Item
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
@@ -46,7 +47,8 @@ class MainController {
         println("Item Details button clicked")
         try {
             val stage = Stage()
-            val loader = FXMLLoader(javaClass.classLoader.getResource("ItemsTableView.fxml"))
+            val loader = FXMLLoader(javaClass.classLoader.getResource("DataBaseModelTableView.fxml"))
+            loader.setController(DataBaseModelTableView(Item::class))
             val root: Parent = loader.load()
 
             val scene = Scene(root)

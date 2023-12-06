@@ -5,9 +5,12 @@ import javax.persistence.EntityManager
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
+import kotlin.reflect.KClass
 
-class Repository<T : DataBaseModel>(private val entityClass: Class<T>) {
-    protected val entityManager: EntityManager = EntityManagerSingleton.instance
+// Source:  https://stackoverflow.com/questions/64521046/whats-the-correct-way-to-iterate-through-properties-of-a-singleton-in-kotlin
+//          https://kotlinlang.org/docs/reflection.html
+class Repository<T : DataBaseModel>(private val entityClass: KClass<T>) {
+    private val entityManager: EntityManager = EntityManagerSingleton.instance
 
     fun addEntity(entity: T) {
         withTransaction { entityManager.persist(entity) }
@@ -15,20 +18,20 @@ class Repository<T : DataBaseModel>(private val entityClass: Class<T>) {
 
     fun getAllEntities(): List<T> {
         val criteriaBuilder: CriteriaBuilder = entityManager.criteriaBuilder
-        val query: CriteriaQuery<T> = criteriaBuilder.createQuery(entityClass)
-        val root: Root<T> = query.from(entityClass)
+        val query: CriteriaQuery<T> = criteriaBuilder.createQuery(entityClass.java)
+        val root: Root<T> = query.from(entityClass.java)
         query.select(root)
         return entityManager.createQuery(query).resultList
     }
 
     fun getEntityById(entityId: Long): T? {
-        return entityManager.find(entityClass, entityId)
+        return entityManager.find(entityClass.java, entityId)
     }
 
     fun getEntityByColumn(column: String, searchString: String): List<T> {
         val criteriaBuilder: CriteriaBuilder = entityManager.criteriaBuilder
-        val query: CriteriaQuery<T> = criteriaBuilder.createQuery(entityClass)
-        val root: Root<T>? = query.from(entityClass)
+        val query: CriteriaQuery<T> = criteriaBuilder.createQuery(entityClass.java)
+        val root: Root<T>? = query.from(entityClass.java)
 
         query.select(root)
         root?.let {
@@ -44,7 +47,7 @@ class Repository<T : DataBaseModel>(private val entityClass: Class<T>) {
 
     fun deleteEntity(entity: T) {
         withTransaction {
-            entityManager.find(entityClass, entity.id)?.let {
+            entityManager.find(entityClass.java, entity.id)?.let {
                 entityManager.remove(it)
             }
         }

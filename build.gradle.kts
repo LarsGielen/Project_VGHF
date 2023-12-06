@@ -25,6 +25,7 @@ dependencies {
     implementation("org.xerial:sqlite-jdbc:3.32.3.2")
     implementation("com.zsoltfabok:sqlite-dialect:1.0")
     implementation("org.controlsfx:controlsfx:11.2.0")
+    implementation(kotlin("reflect"))
 
     testImplementation(kotlin("test"))
 }
