@@ -77,6 +77,7 @@ CREATE TABLE LocationType (
 );
 
 CREATE TABLE VisitorLog (
+	id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     locationid INTEGER NOT NULL,
     visitorid INTEGER NOT NULL,
     date NUMERIC NOT NULL,
@@ -91,7 +92,7 @@ CREATE TABLE Visitor (
 	lastName TEXT NOT NULL,
     phone TEXT NOT NULL,
     email TEXT NOT NULL,
-    locationID INTEGER NOT NULL
+    locationid INTEGER NOT NULL
 );
 
 -- Add dummy data

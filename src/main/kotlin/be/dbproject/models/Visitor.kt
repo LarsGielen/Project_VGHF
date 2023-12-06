@@ -1,8 +1,6 @@
 package be.dbproject.models
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name = "Visitor")
@@ -19,6 +17,12 @@ data class Visitor(
     @Column
     val email: String,
 
-    @Column
-    val locationId: Int
+    @ManyToOne
+    @JoinColumn(name = "locationID")
+    var location: Location,
 ) : DataBaseModel()
+{
+    override fun toString(): String {
+        return "$firstName $lastName"
+    }
+}

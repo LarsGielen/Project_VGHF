@@ -62,6 +62,7 @@ class EditDataBaseModelDialog<T : DataBaseModel>(private val entityClass: KClass
                 ItemType::class -> createComboBoxForType(ItemType::class, parameter)
                 Location::class -> createComboBoxForType(Location::class, parameter)
                 Publisher::class -> createComboBoxForType(Publisher::class, parameter)
+                LocationType::class -> createComboBoxForType(LocationType::class, parameter)
                 Set::class -> {
                     when (parameter.type.arguments.first().type?.classifier) {
                         Genre::class -> createCheckComboBoxForType(Genre::class, parameter)

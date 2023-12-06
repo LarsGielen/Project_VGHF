@@ -1,18 +1,27 @@
 package be.dbproject.models
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Table
+import java.time.LocalDate
+import javax.persistence.*
 
 @Entity
 @Table(name = "VisitorLog")
 data class VisitorLog(
-    @Column
-    val visitorId: Int,
+    @ManyToOne
+    @JoinColumn(name = "visitorid")
+    val visitor: Visitor,
+
+    @ManyToOne
+    @JoinColumn(name = "locationid")
+    val location: Location,
 
     @Column
-    val date: String,
+    val date: LocalDate,
 
     @Column
-    val donation: Double
+    val donation: Float
 ) : DataBaseModel()
+{
+    override fun toString(): String {
+        return "$visitor - $location"
+    }
+}

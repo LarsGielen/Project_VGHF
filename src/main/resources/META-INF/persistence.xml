@@ -13,6 +13,9 @@
         <class>be.dbproject.models.Location</class>
         <class>be.dbproject.models.LocationType</class>
         <class>be.dbproject.models.Platform</class>
+        <class>be.dbproject.models.Visitor</class>
+        <class>be.dbproject.models.VisitorLog</class>
+
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC"/>

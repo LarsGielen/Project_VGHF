@@ -1,15 +1,15 @@
 package be.dbproject.controllers
 
 import be.dbproject.ProjectMain
-import be.dbproject.models.Item
+import be.dbproject.models.*
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Button
-import javafx.scene.layout.AnchorPane
 import javafx.stage.Modality
 import javafx.stage.Stage
+import kotlin.reflect.KClass
 
 class MainController {
 
@@ -23,96 +23,48 @@ class MainController {
     private lateinit var btnVisitorDetails: Button
 
     @FXML
-    private lateinit var btnManageItems: Button
+    private lateinit var btnManageGenres: Button
 
     @FXML
-    private lateinit var btnManageLocations: Button
+    private lateinit var btnManagePlatforms: Button
 
     @FXML
-    private lateinit var btnManageVisitors: Button
+    private lateinit var btnManagePublishers: Button
 
+    @FXML
+    private lateinit var btnManageItemType: Button
+
+    @FXML
+    private lateinit var btnVisitorLogDetails: Button
 
     @FXML
     fun initialize() {
-        btnItemDetails.setOnAction { handleItemDetailsButton() }
-        btnLocationDetails.setOnAction { handleLocationDetailsButton() }
-        btnVisitorDetails.setOnAction { handleVisitorDetailsButton() }
-        btnManageItems.setOnAction { handleManageItemsButton() }
-        btnManageLocations.setOnAction { handleManageLocationsButton() }
-        btnManageVisitors.setOnAction { handleManageVisitorsButton() }
+        btnItemDetails.setOnAction { openTableView(Item::class) }
+        btnLocationDetails.setOnAction { openTableView(Location::class) }
+        btnVisitorDetails.setOnAction { openTableView(Visitor::class) }
+        btnManageGenres.setOnAction { openTableView(Genre::class) }
+        btnManagePlatforms.setOnAction { openTableView(Platform::class) }
+        btnManagePublishers.setOnAction { openTableView(Publisher::class) }
+        btnManageItemType.setOnAction { openTableView(ItemType::class) }
+        btnVisitorLogDetails.setOnAction { openTableView(VisitorLog::class) }
     }
 
-    @FXML
-    fun handleItemDetailsButton() {
-        println("Item Details button clicked")
+    private fun <T : DataBaseModel> openTableView(entityType: KClass<T>) {
         try {
             val stage = Stage()
             val loader = FXMLLoader(javaClass.classLoader.getResource("DataBaseModelTableView.fxml"))
-            loader.setController(DataBaseModelTableView(Item::class))
+            loader.setController(DataBaseModelTableView(entityType))
             val root: Parent = loader.load()
 
             val scene = Scene(root)
 
             stage.setScene(scene)
-            stage.title = "Items"
+            stage.title = entityType.simpleName + " Table View"
             stage.initOwner(ProjectMain.rootStage)
             stage.initModality(Modality.WINDOW_MODAL)
             stage.show()
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }
-
-    @FXML
-    fun handleLocationDetailsButton() {
-        println("Location Details button clicked")
-        try {
-            val stage = Stage()
-            val root = FXMLLoader.load<Any>(javaClass.classLoader.getResource("LocationTableView.fxml")) as AnchorPane
-            val scene = Scene(root)
-
-            stage.setScene(scene)
-            stage.title = "Locations"
-            stage.initOwner(ProjectMain.rootStage)
-            stage.initModality(Modality.WINDOW_MODAL)
-            stage.show()
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    @FXML
-    fun handleVisitorDetailsButton() {
-        println("Visitor Details button clicked")
-        try {
-            val stage = Stage()
-            val root = FXMLLoader.load<Any>(javaClass.classLoader.getResource("VisitorTableView.fxml")) as AnchorPane
-            val scene = Scene(root)
-
-            stage.setScene(scene)
-            stage.title = "Visitors"
-            stage.initOwner(ProjectMain.rootStage)
-            stage.initModality(Modality.WINDOW_MODAL)
-            stage.show()
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    @FXML
-    fun handleManageItemsButton() {
-        println("Manage Items button clicked")
-    }
-
-    @FXML
-    fun handleManageLocationsButton() {
-        println("Manage Locations button clicked")
-    }
-
-    @FXML
-    fun handleManageVisitorsButton() {
-        println("Manage Visitors button clicked")
     }
 }

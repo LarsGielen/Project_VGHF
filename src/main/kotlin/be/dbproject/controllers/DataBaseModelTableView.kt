@@ -55,11 +55,9 @@ class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<
         }
     }
 
-    @FXML
-    fun handleNewItem() = openItemDialog("Add Item",  null)
+    private fun handleNewItem() = openItemDialog("Add Item",  null)
 
-    @FXML
-    fun handleDeleteItem() {
+    private fun handleDeleteItem() {
         val selectedItem = tblItems.selectionModel.selectedItem
 
         if (selectedItem != null) {
@@ -76,8 +74,7 @@ class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<
         }
     }
 
-    @FXML
-    fun handleEditItems() {
+    private fun handleEditItems() {
         val selectedItem = tblItems.selectionModel.selectedItem
 
         if (selectedItem != null) {
