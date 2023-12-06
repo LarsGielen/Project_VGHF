@@ -17,7 +17,7 @@ CREATE TABLE Item (
 	platformid INTEGER,
 	locationid INTEGER NOT NULL,
 	publisherid INTEGER,
-    name TEXT NOT NULL,
+    name TEXT UNIQUE NOT NULL,
     price REAL NOT NULL,
     description TEXT NOT NULL,
     series TEXT NOT NULL,
@@ -30,32 +30,33 @@ CREATE TABLE Item (
 
 CREATE TABLE ItemType (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    name TEXT NOT NULL
+    name TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE Genre (
 	id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-	name TEXT NOT NULL
+	name TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE ItemGenreLink (
+	id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 	itemid INTEGER NOT NULL,
 	genreid INTEGER NOT NULL,
-	PRIMARY KEY (itemid, genreid),
+	UNIQUE(itemid, genreid),
 	FOREIGN KEY (itemId) REFERENCES Item(id),
     FOREIGN KEY (genreId) REFERENCES Genre(id)
 );
 
 CREATE TABLE Platform (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
-    name TEXT NOT NULL,
+    name TEXT UNIQUE NOT NULL,
     description TEXT NOT NULL,
     releaseDate NUMERIC NOT NULL
 );
 
 CREATE TABLE Publisher (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    name TEXT NOT NULL,
+    name TEXT UNIQUE NOT NULL,
     description TEXT NOT NULL,
     website TEXT
 );
@@ -63,20 +64,22 @@ CREATE TABLE Publisher (
 CREATE TABLE Location (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     locationType INTEGER NOT NULL,
-    locationName TEXT NOT NULL,
+    locationName TEXT UNIQUE NOT NULL,
     country TEXT NOT NULL,
 	city TEXT NOT NULL,
 	street TEXT NOT NULL,
 	houseNumber INTEGER NOT NULL,
+	UNIQUE(locationType, country, city, street, houseNumber),
     FOREIGN KEY (locationType) REFERENCES LocationType(id)
 );
 
 CREATE TABLE LocationType (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-    name TEXT NOT NULL
+    name TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE VisitorLog (
+	id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     locationid INTEGER NOT NULL,
     visitorid INTEGER NOT NULL,
     date NUMERIC NOT NULL,
@@ -89,9 +92,10 @@ CREATE TABLE Visitor (
     id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     firstName TEXT NOT NULL,
 	lastName TEXT NOT NULL,
-    phone TEXT NOT NULL,
-    email TEXT NOT NULL,
-    locationID INTEGER NOT NULL
+    phone TEXT UNIQUE NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    locationid INTEGER NOT NULL,
+	UNIQUE(firstName, lastName)
 );
 
 -- Add dummy data

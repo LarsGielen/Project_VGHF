@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.dbproject.controllers.MainController">
+<BorderPane prefHeight="246.0" prefWidth="937.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.dbproject.controllers.MainController">
    <top>
       <MenuBar>
          <Menu text="File">
@@ -20,7 +20,7 @@
       <VBox spacing="10" style="-fx-background-color: #e0e0e0; -fx-padding: 10;">
          <Button fx:id="btnItemDetails" text="Item Details" />
          <Button fx:id="btnLocationDetails" text="Location Details" />
-         <Button fx:id="btnVisitorDetails" text="Visitor Details" />
+         <Button fx:id="btnVisitorLogDetails" text="Visitor Log Details" />
       </VBox>
    </left>
    <center>
@@ -28,9 +28,11 @@
          <Label text="Video Game History Foundation" textAlignment="CENTER" />
          <Label text="Management System" textAlignment="CENTER" />
          <HBox alignment="BOTTOM_CENTER" prefWidth="527.0" spacing="20">
-            <Button fx:id="btnManageItems" prefHeight="26.0" prefWidth="111.0" text="Manage Items" />
-            <Button fx:id="btnManageLocations" prefHeight="26.0" prefWidth="135.0" text="Manage Locations" />
-            <Button fx:id="btnManageVisitors" prefHeight="26.0" prefWidth="119.0" text="Manage Visitors" />
+            <Button fx:id="btnVisitorDetails" text="Visitor Details" />
+            <Button fx:id="btnManageGenres" prefHeight="26.0" prefWidth="111.0" text="Manage Genres" />
+            <Button fx:id="btnManagePlatforms" prefHeight="26.0" prefWidth="135.0" text="Manage Platforms" />
+            <Button fx:id="btnManagePublishers" prefHeight="26.0" prefWidth="119.0" text="Manage Publishers" />
+            <Button fx:id="btnManageItemType" prefHeight="26.0" prefWidth="119.0" text="Manage Item Types" />
          </HBox>
       </VBox>
    </center>
