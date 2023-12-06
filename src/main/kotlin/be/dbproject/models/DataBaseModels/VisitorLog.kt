@@ -18,7 +18,7 @@ data class VisitorLog(
     var date: LocalDate,
 
     @Column
-    var donation: Float
+    var donation: Double
 ) : DataBaseModel()
 {
     override fun toString(): String {
