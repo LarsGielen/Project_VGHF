@@ -58,7 +58,6 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
                 String::class -> createTextField(parameter)
                 Int::class -> createTextField(parameter)
                 Double::class -> createTextField(parameter)
-                Float::class -> createTextField(parameter)
                 LocalDate::class -> createDatePicker(parameter)
 
                 // -- Custom Types
@@ -167,10 +166,13 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
                     }
 
                     if (parameter.type.isSubtypeOf(Number::class.starProjectedType)) {
-                        (inputField as TextField).text.toFloat()
+                        when (parameter.type.classifier) {
+                            Int::class -> inputField.text.toInt()
+                            else -> inputField.text.toDouble()
+                        }
                     }
                     else {
-                        (inputField as TextField).text
+                        inputField.text
                     }
                 }
                 DatePicker::class -> (inputField as DatePicker).value
