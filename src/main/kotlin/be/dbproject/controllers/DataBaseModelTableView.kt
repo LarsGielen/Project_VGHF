@@ -81,39 +81,27 @@ class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<
     }
 
     private fun openItemDialog(entity: T? = null) {
-        EditDataBaseModelDialog(entityClass, tblItems.scene.window, entity) {newEntity ->
-            if (entity == null) {
-                try {
+        EditDataBaseModelDialog(entityClass, tblItems.scene.window, entity) {newEntity, dialog ->
+            try {
+                if (entity == null) {
                     Repository(entityClass).addEntity(newEntity)
                     tblItems.items.add(newEntity)
                 }
-                catch (e : RepositoryException) {
-                    Alert(Alert.AlertType.ERROR).apply {
-                        title = "Error while adding new ${entityClass.simpleName?.lowercase()}"
-                        headerText = null
-                        contentText = "An error occurred while attempting to add a " +
-                                "new ${entityClass.simpleName?.lowercase()}. " +
-                                "Please ensure that all required fields are filled, " +
-                                "and, when necessary, confirm that the values entered are unique."
-                        showAndWait()
-                    }
-                }
-            }
-            else {
-                try {
+                else {
                     Repository(entityClass).updateEntity(entity)
                     tblItems.refresh()
                 }
-                catch (e : RepositoryException) {
-                    Alert(Alert.AlertType.ERROR).apply {
-                        title = "Error while updating the ${entityClass.simpleName?.lowercase()}"
-                        headerText = null
-                        contentText = "An error occurred while attempting to update " +
-                                "the ${entityClass.simpleName?.lowercase()}. " +
-                                "Please ensure that all required fields are filled, " +
-                                "and, when necessary, confirm that the values entered are unique."
-                        showAndWait()
-                    }
+
+                dialog.close()
+            }
+            catch (e : RepositoryException) {
+                Alert(Alert.AlertType.ERROR).apply {
+                    title = "Error while updating/adding ${entityClass.simpleName?.lowercase()}"
+                    headerText = null
+                    contentText = "An error occurred while attempting to update or add " +
+                            "a ${entityClass.simpleName?.lowercase()}. " +
+                            "Please ensure that all required unique fields are unique."
+                    showAndWait()
                 }
             }
         }

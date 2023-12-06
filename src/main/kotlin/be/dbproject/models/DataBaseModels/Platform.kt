@@ -18,6 +18,12 @@ data class Platform(
     var releaseDate: LocalDate
 ) : DataBaseModel()
 {
+    constructor() : this (
+        "",
+        "",
+        LocalDate.now()
+    )
+
     override fun toString() : String{
         return name
     }

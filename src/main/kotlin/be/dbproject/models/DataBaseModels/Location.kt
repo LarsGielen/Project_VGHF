@@ -22,9 +22,18 @@ data class Location(
     var street: String,
 
     @Column
-    var houseNumber: String
+    var houseNumber: Int
 ) : DataBaseModel()
 {
+    constructor() : this (
+        LocationType(),
+        "",
+        "",
+        "",
+        "",
+        0
+    )
+
     override fun toString(): String {
         return "$locationType : $locationName"
     }

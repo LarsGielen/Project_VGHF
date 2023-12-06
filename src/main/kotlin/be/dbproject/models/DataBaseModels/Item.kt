@@ -10,7 +10,7 @@ data class Item(
     var name: String,
 
     @Column(name = "price", nullable = false)
-    var price: Float,
+    var price: Double,
 
     @Column(name = "description", nullable = false)
     var description: String,
@@ -44,4 +44,17 @@ data class Item(
         inverseJoinColumns = [JoinColumn(name = "genreid")]
     )
     var genres: Set<Genre>
-) : DataBaseModel()
+) : DataBaseModel() {
+    constructor() :this(
+        "",
+        0.0,
+        "",
+        "",
+        ItemType(),
+        Platform(),
+        Location(),
+        null,
+        LocalDate.now(),
+        HashSet<Genre>()
+    )
+}

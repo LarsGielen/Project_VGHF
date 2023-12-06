@@ -11,20 +11,18 @@ import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.Window
 import org.controlsfx.control.CheckComboBox
+import java.lang.reflect.InvocationTargetException
 import java.time.LocalDate
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KParameter
-import kotlin.reflect.full.declaredMemberProperties
-import kotlin.reflect.full.isSubtypeOf
-import kotlin.reflect.full.primaryConstructor
-import kotlin.reflect.full.starProjectedType
+import kotlin.reflect.full.*
 
 class EditDataBaseModelDialog<T : DataBaseModel>(
     private val entityClass: KClass<T>,
     owner : Window,
     private val entity : T? = null,
-    private val onExit : (newElement :  T) -> Unit
+    private val onExit : (newElement :  T, dialog: EditDataBaseModelDialog<T>) -> Unit
 ) {
 
     private val stage = Stage()
@@ -47,7 +45,7 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
         cancelBtn = stage.scene.lookup("#cancelBtn") as Button
 
         okBtn.setOnAction { onOkeButton() }
-        cancelBtn.setOnAction { onCancelButton() }
+        cancelBtn.setOnAction { close() }
 
         // Source: https://stackoverflow.com/questions/51687098/kotlin-get-property-in-the-same-order-they-are-declared
         entityClass.primaryConstructor?.parameters?.forEachIndexed { index, parameter ->
@@ -59,6 +57,7 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
             val inputField = when (parameter.type.classifier) {
                 String::class -> createTextField(parameter)
                 Int::class -> createTextField(parameter)
+                Double::class -> createTextField(parameter)
                 Float::class -> createTextField(parameter)
                 LocalDate::class -> createDatePicker(parameter)
 
@@ -84,19 +83,23 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
         stage.showAndWait()
     }
 
-    private fun onOkeButton() {
-
-        val newEntity = when (entity) {
-            null -> createEntityFromInputFields()
-            else -> updateEntityFromInputFields(entity)
-        }
-
-        onExit(newEntity)
+    public fun close() {
         stage.close()
     }
 
-    private fun onCancelButton() {
-        stage.close()
+    private fun onOkeButton() {
+
+        try {
+            onExit(updateEntityFromInputFields(entity), this)
+        }
+        catch (e: java.lang.IllegalArgumentException) {
+            Alert(Alert.AlertType.WARNING).apply {
+                title = null
+                headerText = null
+                contentText = e.message
+                showAndWait()
+            }
+        }
     }
 
     private fun createTextField(parameter: KParameter) : TextField {
@@ -147,42 +150,22 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
         return comboBox
     }
 
-    private fun createEntityFromInputFields(): T {
-        val constructor = entityClass.primaryConstructor
-        val parameters = constructor!!.parameters
+    private fun updateEntityFromInputFields(entity: T?): T {
 
-        val parameterValues = parameters.mapIndexed { index, parameter ->
-            val inputField = grid.children.find { GridPane.getRowIndex(it) == index && GridPane.getColumnIndex(it) == 1 }
-
-            val value = when (inputField!!::class) {
-                TextField::class -> {
-                    if (parameter.type.isSubtypeOf(Number::class.starProjectedType)) {
-                        (inputField as TextField).text.toFloat()
-                    }
-                    else {
-                        (inputField as TextField).text
-                    }
-                }
-                DatePicker::class -> (inputField as DatePicker).value
-                ComboBox::class -> (inputField as ComboBox<*>).value
-                CheckComboBox::class -> (inputField as CheckComboBox<*>).checkModel.checkedItems.toHashSet()
-
-                else -> throw IllegalArgumentException("Unsupported property type: ${parameter.type}")
-            }
-
-            parameter to value
-        }.toMap()
-
-        return constructor.callBy(parameterValues)
-    }
-
-    private fun updateEntityFromInputFields(entity: T): T {
+        val updatedEntity = when(entity) {
+            null -> entityClass.createInstance()
+            else -> entity
+        }
 
         entityClass.primaryConstructor!!.parameters.forEachIndexed { index, parameter ->
             val inputField = grid.children.find { GridPane.getRowIndex(it) == index && GridPane.getColumnIndex(it) == 1 }
 
             val value = when (inputField!!::class) {
                 TextField::class -> {
+                    if ( (inputField as TextField).text.isBlank()) {
+                        throw IllegalArgumentException("${parameter.name} can't be empty")
+                    }
+
                     if (parameter.type.isSubtypeOf(Number::class.starProjectedType)) {
                         (inputField as TextField).text.toFloat()
                     }
@@ -200,10 +183,15 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
             // Source: https://stackoverflow.com/questions/44304480/how-to-set-delegated-property-value-by-reflection-in-kotlin
             val property = entityClass.declaredMemberProperties.first { it.name == parameter.name }
             if (property is KMutableProperty<*>) {
-                property.setter.call(entity, value)
+                try {
+                    property.setter.call(updatedEntity, value)
+                }
+                catch (e: InvocationTargetException) {
+                    throw IllegalArgumentException("${parameter.name} can't be empty")
+                }
             }
         }
 
-        return entity
+        return updatedEntity
     }
 }

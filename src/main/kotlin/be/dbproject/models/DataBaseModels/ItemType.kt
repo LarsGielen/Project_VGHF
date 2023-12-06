@@ -11,6 +11,10 @@ data class ItemType(
     var name: String
 ) : DataBaseModel()
 {
+    constructor() : this (
+        ""
+    )
+
     override fun toString(): String {
         return name
     }

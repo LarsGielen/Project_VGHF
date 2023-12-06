@@ -11,6 +11,10 @@ data class LocationType(
     var name: String
 ) : DataBaseModel()
 {
+    constructor() : this (
+        ""
+    )
+
     override fun toString(): String {
         return name
     }

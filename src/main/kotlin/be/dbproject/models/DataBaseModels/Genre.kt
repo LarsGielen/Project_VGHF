@@ -11,6 +11,10 @@ data class Genre (
     var name: String
 ) : DataBaseModel()
 {
+    constructor() : this (
+        ""
+    )
+
     override fun toString(): String {
         return name
     }
