@@ -43,7 +43,11 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
         val fxmlLoader = FXMLLoader(javaClass.classLoader.getResource("EditDataBaseModelDialog.fxml"))
         val dialogPane = fxmlLoader.load<AnchorPane>()
 
-        stage.title = "Create a new ${entityClass.simpleName?.lowercase()}"
+
+        stage.title = when (entity){
+            null -> "Create a new ${entityClass.simpleName?.lowercase()}"
+            else -> "Edit ${entityClass.simpleName?.lowercase()}: $entity"
+        }
         stage.initModality(Modality.APPLICATION_MODAL)
         stage.initOwner(owner)
         stage.scene = Scene(dialogPane)

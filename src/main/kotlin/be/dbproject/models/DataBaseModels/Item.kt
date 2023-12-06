@@ -57,4 +57,8 @@ data class Item(
         LocalDate.now(),
         HashSet<Genre>()
     )
+
+    override fun toString(): String {
+        return name
+    }
 }
