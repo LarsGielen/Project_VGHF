@@ -1,4 +1,4 @@
-package be.dbproject.models
+package be.dbproject.models.DataBaseModels
 
 import java.time.LocalDate
 import javax.persistence.*

@@ -1,6 +1,6 @@
 package be.dbproject.controllers
 
-import be.dbproject.models.DataBaseModel
+import be.dbproject.models.DataBaseModels.DataBaseModel
 import be.dbproject.repositories.Repository
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.fxml.FXML
@@ -27,7 +27,7 @@ class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<
     fun initialize() {
         createElementBtn.setOnAction { handleNewItem() }
         deleteElementBtn.setOnAction { handleDeleteItem() }
-        editElementBtn.setOnAction { handleEditItems() }
+        editElementBtn.setOnAction { handleEditItem() }
 
         initTable()
     }
@@ -55,37 +55,41 @@ class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<
         }
     }
 
-    private fun handleNewItem() = openItemDialog("Add Item",  null)
+    private fun handleNewItem() = openItemDialog()
 
     private fun handleDeleteItem() {
         val selectedItem = tblItems.selectionModel.selectedItem
 
         if (selectedItem != null) {
-            try {
-                Repository(entityClass).deleteEntity(selectedItem)
-                tblItems.items.remove(selectedItem)
-            } catch (e: Exception) {
-                val alert = Alert(Alert.AlertType.ERROR, "Error deleting item.")
-                alert.showAndWait()
-            }
+            Repository(entityClass).deleteEntity(selectedItem)
+            tblItems.items.remove(selectedItem)
         } else {
             val alert = Alert(Alert.AlertType.WARNING, "Select an item to delete.")
             alert.showAndWait()
         }
     }
 
-    private fun handleEditItems() {
+    private fun handleEditItem() {
         val selectedItem = tblItems.selectionModel.selectedItem
 
         if (selectedItem != null) {
-            openItemDialog("Edit Item", selectedItem)
+            openItemDialog(selectedItem)
         } else {
             val alert = Alert(Alert.AlertType.WARNING, "Select an item to edit.")
             alert.showAndWait()
         }
     }
 
-    private fun openItemDialog(title: String, entity: T?) {
-        EditDataBaseModelDialog(entityClass, tblItems.scene.window, entity)
+    private fun openItemDialog(entity: T? = null) {
+        EditDataBaseModelDialog(entityClass, tblItems.scene.window, entity) {newEntity ->
+            if (entity == null) {
+                Repository(entityClass).addEntity(newEntity)
+                tblItems.items.add(newEntity)
+            }
+            else {
+                Repository(entityClass).updateEntity(entity)
+                tblItems.refresh()
+            }
+        }
     }
 }

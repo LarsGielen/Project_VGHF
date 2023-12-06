@@ -1,6 +1,6 @@
 package be.dbproject.controllers
 
-import be.dbproject.models.*
+import be.dbproject.models.DataBaseModels.*
 import be.dbproject.repositories.Repository
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
@@ -20,7 +20,12 @@ import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.full.starProjectedType
 
-class EditDataBaseModelDialog<T : DataBaseModel>(private val entityClass: KClass<T>, owner : Window, private val entity : T? = null) {
+class EditDataBaseModelDialog<T : DataBaseModel>(
+    private val entityClass: KClass<T>,
+    owner : Window,
+    private val entity : T? = null,
+    private val onExit : (newElement :  T) -> Unit
+) {
 
     private val stage = Stage()
 
@@ -80,15 +85,13 @@ class EditDataBaseModelDialog<T : DataBaseModel>(private val entityClass: KClass
     }
 
     private fun onOkeButton() {
-        if (entity == null) {
-            val newEntity = createEntityFromInputFields()
-            Repository(entityClass).addEntity(newEntity)
-        }
-        else {
-            val newEntity = updateEntityFromInputFields(entity)
-            Repository(entityClass).updateEntity(newEntity)
+
+        val newEntity = when (entity) {
+            null -> createEntityFromInputFields()
+            else -> updateEntityFromInputFields(entity)
         }
 
+        onExit(newEntity)
         stage.close()
     }
 

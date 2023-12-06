@@ -1,4 +1,4 @@
-package be.dbproject.models
+package be.dbproject.models.DataBaseModels
 
 import java.time.LocalDate
 import javax.persistence.Column
@@ -9,13 +9,13 @@ import javax.persistence.Table
 @Table(name = "Platform")
 data class Platform(
     @Column
-    val name: String,
+    var name: String,
 
     @Column
-    val description: String,
+    var description: String,
 
     @Column
-    val releaseDate: LocalDate
+    var releaseDate: LocalDate
 ) : DataBaseModel()
 {
     override fun toString() : String{

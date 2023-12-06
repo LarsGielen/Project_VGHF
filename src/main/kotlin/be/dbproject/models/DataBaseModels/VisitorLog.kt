@@ -1,4 +1,4 @@
-package be.dbproject.models
+package be.dbproject.models.DataBaseModels
 
 import java.time.LocalDate
 import javax.persistence.*
@@ -8,17 +8,17 @@ import javax.persistence.*
 data class VisitorLog(
     @ManyToOne
     @JoinColumn(name = "visitorid")
-    val visitor: Visitor,
+    var visitor: Visitor,
 
     @ManyToOne
     @JoinColumn(name = "locationid")
-    val location: Location,
+    var location: Location,
 
     @Column
-    val date: LocalDate,
+    var date: LocalDate,
 
     @Column
-    val donation: Float
+    var donation: Float
 ) : DataBaseModel()
 {
     override fun toString(): String {

@@ -1,4 +1,4 @@
-package be.dbproject.models
+package be.dbproject.models.DataBaseModels
 
 import javax.persistence.GeneratedValue
 import javax.persistence.Id

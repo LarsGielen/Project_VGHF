@@ -1,4 +1,4 @@
-package be.dbproject.models
+package be.dbproject.models.DataBaseModels
 
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -8,7 +8,7 @@ import javax.persistence.Table
 @Table(name = "ItemType")
 data class ItemType(
     @Column
-    val name: String
+    var name: String
 ) : DataBaseModel()
 {
     override fun toString(): String {

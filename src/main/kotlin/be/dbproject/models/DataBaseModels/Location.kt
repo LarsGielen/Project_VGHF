@@ -1,4 +1,4 @@
-package be.dbproject.models
+package be.dbproject.models.DataBaseModels
 
 import javax.persistence.*
 
@@ -7,22 +7,22 @@ import javax.persistence.*
 data class Location(
     @ManyToOne
     @JoinColumn(name = "locationType")
-    val locationType: LocationType,
+    var locationType: LocationType,
 
     @Column
-    val locationName: String,
+    var locationName: String,
 
     @Column
-    val country: String,
+    var country: String,
 
     @Column
-    val city: String,
+    var city: String,
 
     @Column
-    val street: String,
+    var street: String,
 
     @Column
-    val houseNumber: String
+    var houseNumber: String
 ) : DataBaseModel()
 {
     override fun toString(): String {

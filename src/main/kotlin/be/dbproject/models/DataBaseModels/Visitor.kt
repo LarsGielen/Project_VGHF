@@ -1,4 +1,4 @@
-package be.dbproject.models
+package be.dbproject.models.DataBaseModels
 
 import javax.persistence.*
 
@@ -6,16 +6,16 @@ import javax.persistence.*
 @Table(name = "Visitor")
 data class Visitor(
     @Column
-    val firstName: String,
+    var firstName: String,
 
     @Column
-    val lastName: String,
+    var lastName: String,
 
     @Column
-    val phone: String,
+    var phone: String,
 
     @Column
-    val email: String,
+    var email: String,
 
     @ManyToOne
     @JoinColumn(name = "locationID")

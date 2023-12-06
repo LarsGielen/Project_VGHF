@@ -1,6 +1,6 @@
 package be.dbproject.repositories
 
-import be.dbproject.models.DataBaseModel
+import be.dbproject.models.DataBaseModels.DataBaseModel
 import javax.persistence.EntityManager
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery

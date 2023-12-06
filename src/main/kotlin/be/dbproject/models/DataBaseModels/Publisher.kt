@@ -1,14 +1,20 @@
-package be.dbproject.models
+package be.dbproject.models.DataBaseModels
 
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Table
 
 @Entity
-@Table(name = "Genre")
-data class Genre (
+@Table(name = "Publisher")
+data class Publisher(
     @Column
-    var name: String
+    var name: String,
+
+    @Column
+    var description: String,
+
+    @Column
+    var website: String?
 ) : DataBaseModel()
 {
     override fun toString(): String {
