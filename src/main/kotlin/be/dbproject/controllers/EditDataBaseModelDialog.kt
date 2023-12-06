@@ -145,7 +145,7 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
         grid.add(comboBox, 1, parameter.index)
         val addButton = Button("+").apply {
             setOnAction {
-                EditDataBaseModelDialog(V::class.java.kotlin, owner) {newEntity ->
+                EditDataBaseModelDialog(V::class, owner) {newEntity ->
                     Repository(V::class).addEntity(newEntity)
                     comboBox.items.add(Option(newEntity))
                 }
@@ -171,7 +171,7 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
         grid.add(checkComboBox, 1, parameter.index)
         val addButton = Button("+").apply {
             setOnAction {
-                EditDataBaseModelDialog(V::class.java.kotlin, owner) {newEntity ->
+                EditDataBaseModelDialog(V::class, owner) {newEntity ->
                     Repository(V::class).addEntity(newEntity)
                     checkComboBox.items.add(newEntity)
                 }
@@ -192,7 +192,7 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
         entityClass.primaryConstructor!!.parameters.forEachIndexed { index, parameter ->
             val inputField = grid.children.find { GridPane.getRowIndex(it) == index && GridPane.getColumnIndex(it) == 1 }
 
-            val value = when (inputField!!::class) {
+            val value : Any? = when (inputField!!::class) {
                 TextField::class -> {
                     if ( (inputField as TextField).text.isNotBlank()) {
                         if (parameter.type.isSubtypeOf(Number::class.starProjectedType)) {
