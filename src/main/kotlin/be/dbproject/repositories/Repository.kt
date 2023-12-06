@@ -12,6 +12,7 @@ import kotlin.reflect.KClass
 class Repository<T : DataBaseModel>(private val entityClass: KClass<T>) {
     private val entityManager: EntityManager = EntityManagerSingleton.instance
 
+    @Throws(RepositoryException::class)
     fun addEntity(entity: T) {
         withTransaction { entityManager.persist(entity) }
     }
@@ -41,6 +42,7 @@ class Repository<T : DataBaseModel>(private val entityClass: KClass<T>) {
         return entityManager.createQuery(query).resultList
     }
 
+    @Throws(RepositoryException::class)
     fun updateEntity(entity: T) {
         withTransaction { entityManager.merge(entity) }
     }
@@ -53,15 +55,17 @@ class Repository<T : DataBaseModel>(private val entityClass: KClass<T>) {
         }
     }
 
+    @Throws(RepositoryException::class)
     private fun withTransaction(action: () -> Unit) {
         val transaction = entityManager.transaction
         try {
             transaction.begin()
             action()
             transaction.commit()
-        } catch (e: Exception) {
+        }
+        catch (e: Exception) {
             transaction.rollback()
-            throw e
+            throw RepositoryException(e.message)
         }
     }
 }

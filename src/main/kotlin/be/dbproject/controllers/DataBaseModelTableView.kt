@@ -2,6 +2,7 @@ package be.dbproject.controllers
 
 import be.dbproject.models.DataBaseModels.DataBaseModel
 import be.dbproject.repositories.Repository
+import be.dbproject.repositories.RepositoryException
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.fxml.FXML
 import javafx.scene.control.*
@@ -75,20 +76,45 @@ class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<
         if (selectedItem != null) {
             openItemDialog(selectedItem)
         } else {
-            val alert = Alert(Alert.AlertType.WARNING, "Select an item to edit.")
-            alert.showAndWait()
+            Alert(Alert.AlertType.WARNING, "Select an item to edit.").showAndWait()
         }
     }
 
     private fun openItemDialog(entity: T? = null) {
         EditDataBaseModelDialog(entityClass, tblItems.scene.window, entity) {newEntity ->
             if (entity == null) {
-                Repository(entityClass).addEntity(newEntity)
-                tblItems.items.add(newEntity)
+                try {
+                    Repository(entityClass).addEntity(newEntity)
+                    tblItems.items.add(newEntity)
+                }
+                catch (e : RepositoryException) {
+                    Alert(Alert.AlertType.ERROR).apply {
+                        title = "Error while adding new ${entityClass.simpleName?.lowercase()}"
+                        headerText = null
+                        contentText = "An error occurred while attempting to add a " +
+                                "new ${entityClass.simpleName?.lowercase()}. " +
+                                "Please ensure that all required fields are filled, " +
+                                "and, when necessary, confirm that the values entered are unique."
+                        showAndWait()
+                    }
+                }
             }
             else {
-                Repository(entityClass).updateEntity(entity)
-                tblItems.refresh()
+                try {
+                    Repository(entityClass).updateEntity(entity)
+                    tblItems.refresh()
+                }
+                catch (e : RepositoryException) {
+                    Alert(Alert.AlertType.ERROR).apply {
+                        title = "Error while updating the ${entityClass.simpleName?.lowercase()}"
+                        headerText = null
+                        contentText = "An error occurred while attempting to update " +
+                                "the ${entityClass.simpleName?.lowercase()}. " +
+                                "Please ensure that all required fields are filled, " +
+                                "and, when necessary, confirm that the values entered are unique."
+                        showAndWait()
+                    }
+                }
             }
         }
     }
