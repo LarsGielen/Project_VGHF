@@ -10,7 +10,10 @@
          <children>
             <HBox prefHeight="25.0" prefWidth="531.0" spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="205.0">
                <children>
-                  <ComboBox fx:id="filterMenu" prefWidth="100.0" />
+                  <HBox fx:id="filterBox">
+                     <children>
+                        <ComboBox fx:id="filterMenu" prefWidth="100.0" />
+                     </children></HBox>
                   <TextField fx:id="searchBar" prefHeight="25.0" prefWidth="372.0" HBox.hgrow="ALWAYS" />
                </children>
                <padding>

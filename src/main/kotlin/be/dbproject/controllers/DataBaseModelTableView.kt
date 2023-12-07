@@ -6,6 +6,7 @@ import be.dbproject.repositories.RepositoryException
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.fxml.FXML
 import javafx.scene.control.*
+import javafx.scene.layout.HBox
 import javafx.util.StringConverter
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
@@ -27,30 +28,40 @@ class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<
     private lateinit var editElementBtn: Button
 
     @FXML
-    private lateinit var filterMenu: ComboBox<KProperty1<T, *>>
+    private lateinit var filterBox: HBox
+
+    @FXML
+    private lateinit var filterMenu: ComboBox<KProperty1<*, *>>
 
     @FXML
     private lateinit var searchBar: TextField
 
     @FXML
     fun initialize() {
-        createElementBtn.setOnAction { handleNewItem() }
+        createElementBtn.setOnAction { openItemDialog() }
         deleteElementBtn.setOnAction { handleDeleteItem() }
         editElementBtn.setOnAction { handleEditItem() }
 
-        initFilterMenu()
+        searchBar.textProperty().addListener { observable, oldValue, newValue ->
+            updateTable(newValue)
+        }
+
+        initFilterBox()
         initTable()
+
+        updateTable()
     }
 
-    private fun initFilterMenu() {
+    private fun initFilterBox() {
         filterMenu.apply {
             items.addAll(entityClass.declaredMemberProperties)
-            converter = object : StringConverter<KProperty1<T, *>>() {
-                override fun toString(property: KProperty1<T, *>?): String {
+            prefWidth = 100.0
+            converter = object : StringConverter<KProperty1<*, *>>() {
+                override fun toString(property: KProperty1<*, *>?): String {
                     return property?.let { property.name } ?: ""
                 }
 
-                override fun fromString(string: String?): KProperty1<T, *>? {
+                override fun fromString(string: String?): KProperty1<*, *>? {
                     return null
                 }
             }
@@ -60,7 +71,6 @@ class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<
     private fun initTable() {
         tableView.apply {
             selectionModel.selectionMode = SelectionMode.SINGLE
-            columns.clear()
             setRowFactory {
                 val row = TableRow<T>()
                 row.setOnMouseClicked { event ->
@@ -80,12 +90,18 @@ class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<
             }
             tableView.columns.add(col)
         }
-
-        val items = Repository(entityClass).getAllEntities()
-        tableView.items.addAll(items)
     }
 
-    private fun handleNewItem() = openItemDialog()
+    private fun updateTable(searchString : String = "") {
+        tableView.items.clear()
+
+        val items = when (filterMenu.value) {
+            null -> Repository(entityClass).getAllEntities()
+            else -> Repository(entityClass).getEntityByColumn(filterMenu.value, searchString)
+        }
+
+        tableView.items.addAll(items)
+    }
 
     private fun handleDeleteItem() {
         val selectedItem = tableView.selectionModel.selectedItem
