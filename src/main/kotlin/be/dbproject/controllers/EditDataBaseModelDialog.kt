@@ -117,7 +117,10 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
         }
 
         grid.add(Label(parameter.name), 0, parameter.index)
-        grid.add(datePicker, 1, parameter.index, 2, 1)
+
+        // DatePicker crashed het programma als de prefWidth = Double.MAX_VALUE terwijl de colspan > 1 is.
+        // Maar dit enkel als het scherm niet groot genoeg is?
+        grid.add(datePicker, 1, parameter.index, 1, 1)
     }
 
     private inline fun <reified V : DataBaseModel> createComboBoxForType(comboBoxClass: KClass<V>, parameter : KParameter) {
