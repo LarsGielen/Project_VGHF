@@ -10,6 +10,7 @@ import javafx.scene.layout.GridPane
 import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.Window
+import javafx.util.StringConverter
 import org.controlsfx.control.CheckComboBox
 import java.time.LocalDate
 import kotlin.reflect.KClass
@@ -29,15 +30,6 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
     private val grid: GridPane
     private val okBtn: Button
     private val cancelBtn: Button
-
-    private inner class Option<V : DataBaseModel>(val entity: V?) {
-        override fun toString(): String {
-            if (entity == null) {
-                return "None"
-            }
-            return entity.toString()
-        }
-    }
 
     init {
         val fxmlLoader = FXMLLoader(javaClass.classLoader.getResource("EditDataBaseModelDialog.fxml"))
@@ -124,24 +116,30 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
     }
 
     private inline fun <reified V : DataBaseModel> createComboBoxForType(comboBoxClass: KClass<V>, parameter : KParameter) {
-        val comboBox = ComboBox<Option<V>>().apply {
+        val comboBox = ComboBox<V>().apply {
             prefWidth = Double.MAX_VALUE
+            converter = object : StringConverter<V>() {
+                override fun toString(entity: V?): String {
+                    val property = entityClass.declaredMemberProperties.first { it.name == parameter.name }
+                    return entity?.let {entity.toString() } ?: "None"
+                }
 
+                override fun fromString(string: String?): V? {
+                    return null
+                }
+            }
 
             if (parameter.type.isMarkedNullable) {
-                items.add(Option(null))
-                value = Option(null)
+                items.add(null)
+                value = null
             }
-
-            Repository(comboBoxClass).getAllEntities().forEach {
-                items.add(Option(it))
-            }
+            items.addAll(Repository(comboBoxClass).getAllEntities())
         }
 
         entity?.let { entity ->
             val property = entityClass.declaredMemberProperties.first { it.name == parameter.name }
             val value = property.call(entity) as V?
-            comboBox.value = Option(value)
+            comboBox.value = value
         }
 
         grid.add(Label(parameter.name), 0, parameter.index)
@@ -150,7 +148,7 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
             setOnAction {
                 EditDataBaseModelDialog(V::class, owner) {newEntity ->
                     Repository(V::class).addEntity(newEntity)
-                    comboBox.items.add(Option(newEntity))
+                    comboBox.items.add(newEntity)
                 }
             }
         }
@@ -160,6 +158,15 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
     private inline fun <reified V : DataBaseModel> createCheckComboBoxForType(comboBoxClass: KClass<V>, parameter : KParameter) {
         val checkComboBox = CheckComboBox<V>().apply {
             prefWidth = Double.MAX_VALUE
+            converter = object : StringConverter<V>() {
+                override fun toString(entity: V?): String {
+                    return entity?.let {entity.toString() } ?: "None"
+                }
+
+                override fun fromString(string: String?): V? {
+                    return null
+                }
+            }
             items.addAll(Repository(comboBoxClass).getAllEntities())
         }
 
@@ -213,7 +220,7 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
                     }
                 }
                 DatePicker::class ->  (inputField as DatePicker).value
-                ComboBox::class -> (inputField as ComboBox<Option<*>>).value?.entity
+                ComboBox::class -> (inputField as ComboBox<*>).value
                 CheckComboBox::class -> (inputField as CheckComboBox<*>).checkModel.checkedItems.toHashSet()
 
                 else -> throw IllegalArgumentException("Unsupported property type: ${parameter.type}")
