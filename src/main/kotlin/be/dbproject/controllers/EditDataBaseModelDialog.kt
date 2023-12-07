@@ -5,13 +5,13 @@ import be.dbproject.repositories.Repository
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.*
+import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.GridPane
-import javafx.scene.layout.VBox
 import javafx.stage.Modality
 import javafx.stage.Stage
 import javafx.stage.Window
+import javafx.util.StringConverter
 import org.controlsfx.control.CheckComboBox
-import java.lang.reflect.InvocationTargetException
 import java.time.LocalDate
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
@@ -20,9 +20,9 @@ import kotlin.reflect.full.*
 
 class EditDataBaseModelDialog<T : DataBaseModel>(
     private val entityClass: KClass<T>,
-    owner : Window,
+    private val owner : Window,
     private val entity : T? = null,
-    private val onExit : (newElement :  T, dialog: EditDataBaseModelDialog<T>) -> Unit
+    private val onExit : (newElement :  T) -> Unit
 ) {
 
     private val stage = Stage()
@@ -33,9 +33,13 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
 
     init {
         val fxmlLoader = FXMLLoader(javaClass.classLoader.getResource("EditDataBaseModelDialog.fxml"))
-        val dialogPane = fxmlLoader.load<VBox>()
+        val dialogPane = fxmlLoader.load<AnchorPane>()
 
-        stage.title = "Edit Item"
+
+        stage.title = when (entity){
+            null -> "Create a new ${entityClass.simpleName?.lowercase()}"
+            else -> "Edit ${entityClass.simpleName?.lowercase()}: $entity"
+        }
         stage.initModality(Modality.APPLICATION_MODAL)
         stage.initOwner(owner)
         stage.scene = Scene(dialogPane)
@@ -45,16 +49,11 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
         cancelBtn = stage.scene.lookup("#cancelBtn") as Button
 
         okBtn.setOnAction { onOkeButton() }
-        cancelBtn.setOnAction { close() }
+        cancelBtn.setOnAction { stage.close() }
 
         // Source: https://stackoverflow.com/questions/51687098/kotlin-get-property-in-the-same-order-they-are-declared
-        entityClass.primaryConstructor?.parameters?.forEachIndexed { index, parameter ->
-            // Create label
-            val label = Label(parameter.name)
-            grid.add(label, 0, index)
-
-            // Create input field
-            val inputField = when (parameter.type.classifier) {
+        entityClass.primaryConstructor?.parameters?.forEach { parameter ->
+            when (parameter.type.classifier) {
                 String::class -> createTextField(parameter)
                 Int::class -> createTextField(parameter)
                 Double::class -> createTextField(parameter)
@@ -66,76 +65,108 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
                 Location::class -> createComboBoxForType(Location::class, parameter)
                 Publisher::class -> createComboBoxForType(Publisher::class, parameter)
                 LocationType::class -> createComboBoxForType(LocationType::class, parameter)
+                Visitor::class -> createComboBoxForType(Visitor::class, parameter)
                 Set::class -> {
                     when (parameter.type.arguments.first().type?.classifier) {
                         Genre::class -> createCheckComboBoxForType(Genre::class, parameter)
                         else -> throw IllegalArgumentException("Unsupported property type for set: $parameter")
                     }
                 }
-
                 else -> throw IllegalArgumentException("Unsupported property type: $parameter")
             }
-
-            grid.add(inputField, 1, index)
         }
 
         stage.showAndWait()
     }
 
-    public fun close() {
-        stage.close()
-    }
-
     private fun onOkeButton() {
-
-        try {
-            onExit(updateEntityFromInputFields(entity), this)
-        }
-        catch (e: java.lang.IllegalArgumentException) {
-            Alert(Alert.AlertType.WARNING).apply {
-                title = null
-                headerText = null
-                contentText = e.message
-                showAndWait()
-            }
+        val updatedEntity = updateEntityFromInputFields(entity)
+        updatedEntity?.let {
+            onExit(it)
+            stage.close()
         }
     }
 
-    private fun createTextField(parameter: KParameter) : TextField {
+    private fun createTextField(parameter: KParameter) {
         val textField = TextField()
         entity?.let {entity ->
             val property = entityClass.declaredMemberProperties.first { it.name == parameter.name }
             textField.text = property.call(entity).toString()
         }
 
-        return textField
+        grid.add(Label(parameter.name), 0, parameter.index)
+        grid.add(textField, 1, parameter.index, 2, 1)
     }
 
-    private fun createDatePicker(parameter: KParameter) : DatePicker {
-        val datePicker = DatePicker()
+    private fun createDatePicker(parameter: KParameter) {
+        val datePicker = DatePicker().apply {
+            prefWidth = Double.MAX_VALUE
+        }
+
         entity?.let {entity ->
             val property = entityClass.declaredMemberProperties.first { it.name == parameter.name }
             datePicker.value = property.call(entity) as LocalDate
         }
 
-        return datePicker
+        grid.add(Label(parameter.name), 0, parameter.index)
+
+        // DatePicker crashed het programma als de prefWidth = Double.MAX_VALUE terwijl de colspan > 1 is.
+        // Maar dit enkel als het scherm niet groot genoeg is?
+        grid.add(datePicker, 1, parameter.index, 1, 1)
     }
 
-    private fun <V : DataBaseModel> createComboBoxForType(comboBoxClass: KClass<V>, parameter : KParameter) : ComboBox<V> {
+    private inline fun <reified V : DataBaseModel> createComboBoxForType(comboBoxClass: KClass<V>, parameter : KParameter) {
         val comboBox = ComboBox<V>().apply {
+            prefWidth = Double.MAX_VALUE
+            converter = object : StringConverter<V>() {
+                override fun toString(entity: V?): String {
+                    val property = entityClass.declaredMemberProperties.first { it.name == parameter.name }
+                    return entity?.let {entity.toString() } ?: "None"
+                }
+
+                override fun fromString(string: String?): V? {
+                    return null
+                }
+            }
+
+            if (parameter.type.isMarkedNullable) {
+                items.add(null)
+                value = null
+            }
             items.addAll(Repository(comboBoxClass).getAllEntities())
         }
 
         entity?.let { entity ->
             val property = entityClass.declaredMemberProperties.first { it.name == parameter.name }
-            comboBox.value = property.call(entity) as V?
+            val value = property.call(entity) as V?
+            comboBox.value = value
         }
 
-        return comboBox
+        grid.add(Label(parameter.name), 0, parameter.index)
+        grid.add(comboBox, 1, parameter.index)
+        val addButton = Button("+").apply {
+            setOnAction {
+                EditDataBaseModelDialog(V::class, owner) {newEntity ->
+                    Repository(V::class).addEntity(newEntity)
+                    comboBox.items.add(newEntity)
+                }
+            }
+        }
+        grid.add(addButton, 2, parameter.index)
     }
 
-    private fun <V : DataBaseModel> createCheckComboBoxForType(comboBoxClass: KClass<V>, parameter : KParameter) : CheckComboBox<V> {
-        val comboBox = CheckComboBox<V>().apply {
+    private inline fun <reified V : DataBaseModel> createCheckComboBoxForType(comboBoxClass: KClass<V>, parameter : KParameter) {
+        val checkComboBox = CheckComboBox<V>().apply {
+            prefWidth = Double.MAX_VALUE
+            converter = object : StringConverter<V>() {
+                override fun toString(entity: V?): String {
+                    return entity?.let {entity.toString() } ?: "None"
+                }
+
+                override fun fromString(string: String?): V? {
+                    return null
+                }
+            }
             items.addAll(Repository(comboBoxClass).getAllEntities())
         }
 
@@ -143,39 +174,52 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
             val property = entityClass.declaredMemberProperties.first { it.name == parameter.name }
             val values = property.call(entity) as Set<V>
 
-            values.forEach {comboBox.checkModel.check(it) }
+            values.forEach {checkComboBox.checkModel.check(it) }
         }
 
-        return comboBox
+        grid.add(Label(parameter.name), 0, parameter.index)
+        grid.add(checkComboBox, 1, parameter.index)
+        val addButton = Button("+").apply {
+            setOnAction {
+                EditDataBaseModelDialog(V::class, owner) {newEntity ->
+                    Repository(V::class).addEntity(newEntity)
+                    checkComboBox.items.add(newEntity)
+                }
+            }
+        }
+        grid.add(addButton, 2, parameter.index)
     }
 
-    private fun updateEntityFromInputFields(entity: T?): T {
+    private fun updateEntityFromInputFields(entity: T?): T? {
 
         val updatedEntity = when(entity) {
             null -> entityClass.createInstance()
             else -> entity
         }
 
+        var errorFlag : Boolean = false
+
         entityClass.primaryConstructor!!.parameters.forEachIndexed { index, parameter ->
             val inputField = grid.children.find { GridPane.getRowIndex(it) == index && GridPane.getColumnIndex(it) == 1 }
 
-            val value = when (inputField!!::class) {
+            val value : Any? = when (inputField!!::class) {
                 TextField::class -> {
-                    if ( (inputField as TextField).text.isBlank()) {
-                        throw IllegalArgumentException("${parameter.name} can't be empty")
-                    }
-
-                    if (parameter.type.isSubtypeOf(Number::class.starProjectedType)) {
-                        when (parameter.type.classifier) {
-                            Int::class -> inputField.text.toInt()
-                            else -> inputField.text.toDouble()
+                    if ( (inputField as TextField).text.isNotBlank()) {
+                        if (parameter.type.isSubtypeOf(Number::class.starProjectedType)) {
+                            when (parameter.type.classifier) {
+                                Int::class -> inputField.text.toIntOrNull()
+                                else -> inputField.text.toDoubleOrNull()
+                            }
+                        }
+                        else {
+                            inputField.text
                         }
                     }
                     else {
-                        inputField.text
+                        null
                     }
                 }
-                DatePicker::class -> (inputField as DatePicker).value
+                DatePicker::class ->  (inputField as DatePicker).value
                 ComboBox::class -> (inputField as ComboBox<*>).value
                 CheckComboBox::class -> (inputField as CheckComboBox<*>).checkModel.checkedItems.toHashSet()
 
@@ -187,13 +231,22 @@ class EditDataBaseModelDialog<T : DataBaseModel>(
             if (property is KMutableProperty<*>) {
                 try {
                     property.setter.call(updatedEntity, value)
+                    inputField.style = "-fx-control-inner-background: white;"
                 }
-                catch (e: InvocationTargetException) {
-                    throw IllegalArgumentException("${parameter.name} can't be empty")
+                catch (e: Exception) {
+                    inputField.style = "-fx-control-inner-background: lightcoral;"
+                    if (property.returnType.isSubtypeOf(DataBaseModel::class.starProjectedType)) {
+                        inputField.style = "-fx-background-color: lightcoral;"
+                    }
+
+                    errorFlag = true
                 }
             }
         }
 
+        if (errorFlag) {
+            return null
+        }
         return updatedEntity
     }
 }

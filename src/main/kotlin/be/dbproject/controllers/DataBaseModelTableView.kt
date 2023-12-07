@@ -81,7 +81,7 @@ class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<
     }
 
     private fun openItemDialog(entity: T? = null) {
-        EditDataBaseModelDialog(entityClass, tblItems.scene.window, entity) {newEntity, dialog ->
+        EditDataBaseModelDialog(entityClass, tblItems.scene.window, entity) {newEntity ->
             try {
                 if (entity == null) {
                     Repository(entityClass).addEntity(newEntity)
@@ -91,8 +91,6 @@ class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<
                     Repository(entityClass).updateEntity(entity)
                     tblItems.refresh()
                 }
-
-                dialog.close()
             }
             catch (e : RepositoryException) {
                 Alert(Alert.AlertType.ERROR).apply {
