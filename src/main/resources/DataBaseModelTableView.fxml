@@ -29,7 +29,7 @@
             <Insets bottom="5.0" top="5.0" />
          </VBox.margin>
       </AnchorPane>
-      <TableView fx:id="tblItems" VBox.vgrow="ALWAYS">
+      <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
          <columns>
          </columns>
       </TableView>
