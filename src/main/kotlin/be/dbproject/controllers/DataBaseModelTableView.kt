@@ -6,7 +6,9 @@ import be.dbproject.repositories.RepositoryException
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.fxml.FXML
 import javafx.scene.control.*
+import javafx.util.StringConverter
 import kotlin.reflect.KClass
+import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.primaryConstructor
 
@@ -25,12 +27,34 @@ class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<
     private lateinit var editElementBtn: Button
 
     @FXML
+    private lateinit var filterMenu: ComboBox<KProperty1<T, *>>
+
+    @FXML
+    private lateinit var searchBar: TextField
+
+    @FXML
     fun initialize() {
         createElementBtn.setOnAction { handleNewItem() }
         deleteElementBtn.setOnAction { handleDeleteItem() }
         editElementBtn.setOnAction { handleEditItem() }
 
+        initFilterMenu()
         initTable()
+    }
+
+    private fun initFilterMenu() {
+        filterMenu.apply {
+            items.addAll(entityClass.declaredMemberProperties)
+            converter = object : StringConverter<KProperty1<T, *>>() {
+                override fun toString(property: KProperty1<T, *>?): String {
+                    return property?.let { property.name } ?: ""
+                }
+
+                override fun fromString(string: String?): KProperty1<T, *>? {
+                    return null
+                }
+            }
+        }
     }
 
     private fun initTable() {
