@@ -1,6 +1,6 @@
 package be.dbproject.controllers
 
-import be.dbproject.models.DataBaseModels.DataBaseModel
+import be.dbproject.models.database.DatabaseModel
 import be.dbproject.repositories.Repository
 import be.dbproject.repositories.RepositoryException
 import javafx.beans.property.ReadOnlyObjectWrapper
@@ -13,7 +13,7 @@ import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.primaryConstructor
 
-class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<T>) {
+class DatabaseModelTableView<T : DatabaseModel>(private val entityClass: KClass<T>) {
 
     @FXML
     private lateinit var tableView: TableView<T>
@@ -126,7 +126,7 @@ class DataBaseModelTableView<T : DataBaseModel>(private val entityClass: KClass<
     }
 
     private fun openItemDialog(entity: T? = null) {
-        EditDataBaseModelDialog(entityClass, tableView.scene.window, entity) { newEntity ->
+        EditDatabaseModelDialog(entityClass, tableView.scene.window, entity) { newEntity ->
             try {
                 if (entity == null) {
                     Repository(entityClass).addEntity(newEntity)

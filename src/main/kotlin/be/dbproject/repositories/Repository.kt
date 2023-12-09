@@ -1,6 +1,6 @@
 package be.dbproject.repositories
 
-import be.dbproject.models.DataBaseModels.DataBaseModel
+import be.dbproject.models.database.DatabaseModel
 import javax.persistence.EntityManager
 import javax.persistence.criteria.CriteriaBuilder
 import javax.persistence.criteria.CriteriaQuery
@@ -11,7 +11,7 @@ import kotlin.reflect.full.starProjectedType
 
 // Source:  https://stackoverflow.com/questions/64521046/whats-the-correct-way-to-iterate-through-properties-of-a-singleton-in-kotlin
 //          https://kotlinlang.org/docs/reflection.html
-class Repository<T : DataBaseModel>(private val entityClass: KClass<T>) {
+class Repository<T : DatabaseModel>(private val entityClass: KClass<T>) {
     private val entityManager: EntityManager = EntityManagerSingleton.instance
 
     @Throws(RepositoryException::class)
