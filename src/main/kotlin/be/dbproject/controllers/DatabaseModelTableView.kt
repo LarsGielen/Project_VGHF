@@ -3,13 +3,12 @@ package be.dbproject.controllers
 import be.dbproject.models.database.DatabaseModel
 import be.dbproject.repositories.Repository
 import be.dbproject.repositories.RepositoryException
+import be.dbproject.view.DatabaseSearchBar
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.fxml.FXML
 import javafx.scene.control.*
 import javafx.scene.layout.HBox
-import javafx.util.StringConverter
 import kotlin.reflect.KClass
-import kotlin.reflect.KProperty1
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.primaryConstructor
 
@@ -30,11 +29,7 @@ class DatabaseModelTableView<T : DatabaseModel>(private val entityClass: KClass<
     @FXML
     private lateinit var filterBox: HBox
 
-    @FXML
-    private lateinit var filterMenu: ComboBox<KProperty1<*, *>>
-
-    @FXML
-    private lateinit var searchBar: TextField
+    private lateinit var searchBar : DatabaseSearchBar<T>
 
     @FXML
     fun initialize() {
@@ -42,28 +37,26 @@ class DatabaseModelTableView<T : DatabaseModel>(private val entityClass: KClass<
         deleteElementBtn.setOnAction { handleDeleteItem() }
         editElementBtn.setOnAction { handleEditItem() }
 
-        searchBar.textProperty().addListener { observable, oldValue, newValue ->
-            updateTable(newValue)
-        }
-
         initFilterBox()
         initTable()
 
-        updateTable()
+        updateTable(Repository(entityClass).getAllEntities())
     }
 
     private fun initFilterBox() {
-        filterMenu.apply {
-            items.addAll(entityClass.declaredMemberProperties)
-            prefWidth = 100.0
-            converter = object : StringConverter<KProperty1<*, *>>() {
-                override fun toString(property: KProperty1<*, *>?): String {
-                    return property?.let { property.name } ?: ""
-                }
+        searchBar = DatabaseSearchBar(entityClass).apply {
+            prefWidthProperty().bind(filterBox.widthProperty())
+            filterBox.children.add(this)
+            setOnSearch { columnNames, columnTypes, searchParam, queryType ->
 
-                override fun fromString(string: String?): KProperty1<*, *>? {
-                    return null
-                }
+                val entities = Repository(entityClass).getEntityByColumn(
+                    columnNames,
+                    columnTypes,
+                    searchParam,
+                    queryType
+                )
+
+                updateTable(entities)
             }
         }
     }
@@ -92,15 +85,9 @@ class DatabaseModelTableView<T : DatabaseModel>(private val entityClass: KClass<
         }
     }
 
-    private fun updateTable(searchString : String = "") {
+    private fun updateTable(entities: List<T>) {
         tableView.items.clear()
-
-        val items = when (filterMenu.value) {
-            null -> Repository(entityClass).getAllEntities()
-            else -> Repository(entityClass).getEntityByColumn(filterMenu.value, searchString)
-        }
-
-        tableView.items.addAll(items)
+        tableView.items.addAll(entities)
     }
 
     private fun handleDeleteItem() {

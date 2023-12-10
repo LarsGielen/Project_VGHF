@@ -14,8 +14,6 @@ class ComboBoxWithButton <T>() : HBox() {
         get() = field
 
     init {
-        prefWidth = Double.MAX_VALUE
-
         comboBox = ComboBox<T>().apply {
             converter = object : StringConverter<T>() {
                 override fun toString(entity: T?): String {

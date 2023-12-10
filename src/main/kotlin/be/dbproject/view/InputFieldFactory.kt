@@ -33,7 +33,7 @@ class InputFieldFactory () {
             Double::class -> createTextField(defaultValue.toString())
             LocalDate::class -> createDatePicker(defaultValue as LocalDate?)
 
-            // -- Custom Types
+            // -- Custom Database Types
             Platform::class -> createComboBox(Platform::class, defaultValue as Platform?, isNullable)
             ItemType::class -> createComboBox(ItemType::class, defaultValue as ItemType?, isNullable)
             Location::class -> createComboBox(Location::class,  defaultValue as Location?, isNullable)
