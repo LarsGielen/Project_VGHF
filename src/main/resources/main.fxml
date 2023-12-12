@@ -20,6 +20,7 @@
       <VBox spacing="10" style="-fx-background-color: #e0e0e0; -fx-padding: 10;">
          <Button fx:id="btnItemDetails" text="Item Details" />
          <Button fx:id="btnLocationDetails" text="Location Details" />
+         <Button fx:id="btnReviewDetails" mnemonicParsing="false" text="Review Details" />
          <Button fx:id="btnVisitorLogDetails" text="Visitor Log Details" />
       </VBox>
    </left>
