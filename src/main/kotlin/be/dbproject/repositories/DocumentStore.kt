@@ -13,9 +13,13 @@ class DocumentStore {
     }
 
     fun getAllReviews(): List<Review> {
-        val reviews = dbClient.view("reviews/_all_docs").includeDocs(true).query(Review::class.java)
+        val reviews = dbClient.view("_all_docs").includeDocs(true).query(Review::class.java)
         dbClient.shutdown()
         return reviews
     }
 
+    fun addReview(review: Review) {
+        dbClient.save(review)
+        dbClient.shutdown()
+    }
 }
