@@ -191,7 +191,10 @@ class DatabaseSearchBar<T : DatabaseModel>(private val startClass : KClass<T>) :
 
         val searchString : String = when (inputField::class) {
             TextField::class -> (inputField as TextField).text
-            // DatePicker::class -> (inputField as DatePicker).value.atStartOfDay(ZoneId.systemDefault()).toEpochSecond().toString()
+            DatePicker::class -> {
+                val fieldValue = (inputField as DatePicker).value
+                if(fieldValue != null) fieldValue.atStartOfDay(java.time.ZoneId.systemDefault())?.toEpochSecond().toString() else ""
+            }
             else -> throw NotImplementedError()
         }
 

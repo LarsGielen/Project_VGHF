@@ -49,7 +49,7 @@ class DatabaseModelTableView<T : DatabaseModel>(private val entityClass: KClass<
             filterBox.children.add(this)
             setOnSearch { columnNames, columnTypes, searchParam, queryType ->
 
-                val entities = Repository(entityClass).getEntityByColumn(
+                val entities = Repository(entityClass).getEntitiesByColumn(
                     columnNames,
                     columnTypes,
                     searchParam,
