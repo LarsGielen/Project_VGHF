@@ -46,7 +46,9 @@ class DatabaseSearchBar<T : DatabaseModel>(private val startClass : KClass<T>) :
             val classProperties = kClass.declaredMemberProperties
 
             classProperties.forEach {
-                items.add(it)
+                if (!(it.returnType.classifier as KClass<*>).isSubclassOf(Collection::class)){
+                    items.add(it)
+                }
             }
 
             setOnAction { createNewMenu(); search() }
@@ -106,7 +108,7 @@ class DatabaseSearchBar<T : DatabaseModel>(private val startClass : KClass<T>) :
                 }
             }
 
-            val options : List<Repository.QueryType> = if (kClass.isSubclassOf(DatabaseModel::class)) {
+            val options : List<Repository.QueryType> = if (kClass.isSubclassOf(Collection::class)) {
                 listOf(Repository.QueryType.EQUAL)
             }
             else when (kClass) {
@@ -131,10 +133,11 @@ class DatabaseSearchBar<T : DatabaseModel>(private val startClass : KClass<T>) :
         }
 
         fun createNewInputField() {
-            val inputField = when (kClass) {
-                LocalDate::class -> DatePicker().apply { setOnAction { search() } }
-                else -> TextField().apply { textProperty().addListener { _, _, _ -> search() } }
-            }
+
+            val inputField = InputFieldFactory().createInputFieldForClass(
+                kClass = kClass,
+                onValueChange = { search() }
+            )
 
             inputFieldBox.apply {
                 children.clear()

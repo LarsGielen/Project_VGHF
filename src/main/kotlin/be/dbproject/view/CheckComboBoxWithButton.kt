@@ -1,11 +1,12 @@
 package be.dbproject.view
 
+import javafx.collections.ListChangeListener
 import javafx.scene.control.Button
 import javafx.scene.layout.HBox
 import javafx.util.StringConverter
 import org.controlsfx.control.CheckComboBox
 
-class CheckComboBoxWithButton <T>() : HBox() {
+class CheckComboBoxWithButton <T>(onValueChange: (() -> Unit)? = null) : HBox() {
 
     val checkComboBox : CheckComboBox<T>
         get() = field
@@ -26,8 +27,14 @@ class CheckComboBoxWithButton <T>() : HBox() {
                     return null
                 }
             }
+
+            prefWidthProperty().bind(widthProperty())
         }
-        checkComboBox.prefWidthProperty().bind(widthProperty())
+
+        val listener = ListChangeListener<T> {
+            onValueChange?.invoke()
+        }
+        checkComboBox.checkModel.checkedItems.addListener(listener)
 
         button = Button("+").apply {
             minWidth = 25.0

@@ -16,54 +16,67 @@ class InputFieldFactory () {
         kClass : KClass<T>,
         isNullable : Boolean = false,
         isCollection: Boolean = false,
-        defaultValue : Any? = null
+        defaultValue : Any? = null,
+        onValueChange: (() -> Unit)? = null
     ) : Node {
 
         if (isCollection) {
             return when (kClass) {
-                Genre::class -> createCheckComboBox(Genre::class, defaultValue as Collection<Genre>?)
+                Genre::class -> createCheckComboBox(Genre::class, defaultValue as Collection<Genre>?) {
+                    onValueChange?.invoke()
+                }
 
                 else -> throw IllegalArgumentException("Unsupported class for collections: ${kClass.simpleName}")
             }
         }
 
         return when (kClass) {
-            String::class -> createTextField(defaultValue.toString())
-            Int::class -> createTextField(defaultValue.toString())
-            Double::class -> createTextField(defaultValue.toString())
-            LocalDate::class -> createDatePicker(defaultValue as LocalDate?)
+            String::class -> createTextField(defaultValue.toString()) { onValueChange?.invoke() }
+            Int::class -> createTextField(defaultValue.toString()) { onValueChange?.invoke() }
+            Double::class -> createTextField(defaultValue.toString()) { onValueChange?.invoke() }
+            LocalDate::class -> createDatePicker(defaultValue as LocalDate?) { onValueChange?.invoke() }
 
             // -- Custom Database Types
-            Platform::class -> createComboBox(Platform::class, defaultValue as Platform?, isNullable)
-            ItemType::class -> createComboBox(ItemType::class, defaultValue as ItemType?, isNullable)
-            Location::class -> createComboBox(Location::class,  defaultValue as Location?, isNullable)
-            Publisher::class -> createComboBox(Publisher::class, defaultValue as Publisher?, isNullable)
-            LocationType::class -> createComboBox(LocationType::class, defaultValue as LocationType?, isNullable)
-            Visitor::class -> createComboBox(Visitor::class, defaultValue as Visitor?, isNullable)
-            Genre::class -> createComboBox(Genre::class, defaultValue as Genre?, isNullable)
+            Platform::class -> createComboBox(Platform::class, defaultValue as Platform?, isNullable) { onValueChange?.invoke() }
+            ItemType::class -> createComboBox(ItemType::class, defaultValue as ItemType?, isNullable) { onValueChange?.invoke() }
+            Location::class -> createComboBox(Location::class,  defaultValue as Location?, isNullable) { onValueChange?.invoke() }
+            Publisher::class -> createComboBox(Publisher::class, defaultValue as Publisher?, isNullable) { onValueChange?.invoke() }
+            LocationType::class -> createComboBox(LocationType::class, defaultValue as LocationType?, isNullable) { onValueChange?.invoke() }
+            Visitor::class -> createComboBox(Visitor::class, defaultValue as Visitor?, isNullable) { onValueChange?.invoke() }
+            Genre::class -> createComboBox(Genre::class, defaultValue as Genre?, isNullable) { onValueChange?.invoke() }
 
             else -> throw IllegalArgumentException("Unsupported class: ${kClass.simpleName}")
         }
     }
 
-    private fun createTextField(defaultValue : String) : TextField{
+    private fun createTextField(defaultValue : String, onValueChange: (() -> Unit)?) : TextField{
 
         return TextField().apply {
             if (defaultValue != "null") text = defaultValue
+            textProperty().addListener { _, _, _ -> onValueChange?.invoke() }
         }
     }
 
-    private fun createDatePicker(defaultValue: LocalDate? = null) : DatePicker {
+    private fun createDatePicker(defaultValue: LocalDate? = null, onValueChange: (() -> Unit)?) : DatePicker {
 
         return DatePicker().apply {
             prefWidth = Double.MAX_VALUE
             value = defaultValue
+
+            valueProperty().addListener {_, _, _ -> onValueChange?.invoke()}
         }
     }
 
-    private fun <T : DatabaseModel> createComboBox(kClass : KClass<T>, defaultValue: T? = null, isNullable: Boolean) : ComboBoxWithButton<T> {
+    private fun <T : DatabaseModel> createComboBox(
+        kClass : KClass<T>,
+        defaultValue: T? = null,
+        isNullable: Boolean,
+        onValueChange: (() -> Unit)?
+    ) : ComboBoxWithButton<T> {
 
-        val comboBoxWithButton = ComboBoxWithButton<T>()
+        val comboBoxWithButton = ComboBoxWithButton<T>{
+            onValueChange?.invoke()
+        }
 
         comboBoxWithButton.comboBox.apply {
             if (isNullable) {
@@ -88,9 +101,15 @@ class InputFieldFactory () {
         return comboBoxWithButton
     }
 
-    private fun <T : DatabaseModel> createCheckComboBox(kClass : KClass<T>, defaultValues: Collection<T>? = null) : HBox {
+    private fun <T : DatabaseModel> createCheckComboBox(
+        kClass : KClass<T>,
+        defaultValues: Collection<T>? = null,
+        onValueChange: (() -> Unit)?
+    ) : HBox {
 
-        val checkComboBoxWithButton = CheckComboBoxWithButton<T>()
+        val checkComboBoxWithButton = CheckComboBoxWithButton<T> {
+            onValueChange?.invoke()
+        }
 
         checkComboBoxWithButton.checkComboBox.apply {
             Repository(kClass).getAllEntities().forEach {

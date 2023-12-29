@@ -5,7 +5,7 @@ import javafx.scene.control.ComboBox
 import javafx.scene.layout.HBox
 import javafx.util.StringConverter
 
-class ComboBoxWithButton <T>() : HBox() {
+class ComboBoxWithButton <T>(onValueChange: (() -> Unit)? = null) : HBox() {
 
     val comboBox : ComboBox<T>
         get() = field
@@ -24,6 +24,8 @@ class ComboBoxWithButton <T>() : HBox() {
                     return null
                 }
             }
+
+            valueProperty().addListener { _, _, _ -> onValueChange?.invoke() }
         }
         comboBox.prefWidthProperty().bind(widthProperty())
 
