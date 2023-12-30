@@ -38,6 +38,9 @@ class MainController {
     private lateinit var btnVisitorLogDetails: Button
 
     @FXML
+    private lateinit var btnReviewDetails: Button
+
+    @FXML
     fun initialize() {
         btnItemDetails.setOnAction { openTableView(Item::class) }
         btnLocationDetails.setOnAction { openTableView(Location::class) }
@@ -47,6 +50,7 @@ class MainController {
         btnManagePublishers.setOnAction { openTableView(Publisher::class) }
         btnManageItemType.setOnAction { openTableView(ItemType::class) }
         btnVisitorLogDetails.setOnAction { openTableView(VisitorLog::class) }
+        btnReviewDetails.setOnAction { openReviewsView()}
     }
 
     private fun <T : DataBaseModel> openTableView(entityType: KClass<T>) {
@@ -60,6 +64,23 @@ class MainController {
 
             stage.setScene(scene)
             stage.title = entityType.simpleName + " Table View"
+            stage.initOwner(ProjectMain.rootStage)
+            stage.initModality(Modality.WINDOW_MODAL)
+            stage.show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    private fun openReviewsView(){
+        try {
+            val stage = Stage()
+            val loader = FXMLLoader(javaClass.classLoader.getResource("ReviewsView.fxml"))
+            val root: Parent = loader.load()
+
+            val scene = Scene(root)
+
+            stage.setScene(scene)
+            stage.title = "Reviews"
             stage.initOwner(ProjectMain.rootStage)
             stage.initModality(Modality.WINDOW_MODAL)
             stage.show()

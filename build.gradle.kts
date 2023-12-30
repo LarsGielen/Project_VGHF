@@ -26,6 +26,7 @@ dependencies {
     implementation("com.zsoltfabok:sqlite-dialect:1.0")
     implementation("org.controlsfx:controlsfx:11.2.0")
     implementation(kotlin("reflect"))
+    implementation("org.lightcouch:lightcouch:0.2.0")
 
     testImplementation(kotlin("test"))
 }
