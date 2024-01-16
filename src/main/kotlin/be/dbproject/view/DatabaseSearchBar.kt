@@ -54,7 +54,7 @@ class DatabaseSearchBar<T : DatabaseModel>(private val startClass : KClass<T>) :
             setOnAction { createNewMenu(); search() }
         }
 
-        fun createNewMenu() {
+        private fun createNewMenu() {
             if (filterButtonHolder.children.count() > 1) {
                 val startIndex = filterButtonHolder.children.indexOf(this) + 1
                 val endIndex = filterButtonHolder.children.lastIndex + 1
