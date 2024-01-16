@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "title": "Great experience",
+        "rating": 5,
+        "comment": "The service was excellent and the staff was very friendly.",
+        "visitId": 123456789
+    },
+    {
+        "id": 2,
+        "title": "Disappointing",
+        "rating": 2,
+        "comment": "The Museum was closed and I did not know.",
+        "visitId": 987654321
+    },
+    {
+        "id": 3,
+        "title": "Average",
+        "rating": 3,
+        "comment": "The Museum was okay, but the service could be better.",
+        "visitId": 1122334455
+    },
+    {
+        "id": 4,
+        "title": "Excellent",
+        "rating": 5,
+        "comment": "The Museum was excellent and the service was outstanding.",
+        "visitId": 5566778899
+    },
+    {
+        "id": 5,
+        "title": "Amazing Video Game Museum",
+        "rating": 5,
+        "comment": "The Video Game Museum was fantastic! The exhibits were engaging and the staff was knowledgeable. Highly recommended for any gaming enthusiast.",
+        "visitId": 6677889900
+    },
+    {
+        "id": 6,
+        "title": "Incredible Experience",
+        "rating": 5,
+        "comment": "The Video Game Museum was an incredible experience! The interactive exhibits were a hit with the kids and the retro games brought back memories. A must-visit for families.",
+        "visitId": 7788990011
+    },
+    {
+        "id": 7,
+        "title": "Nostalgic Journey",
+        "rating": 4,
+        "comment": "The Video Game Museum took me on a nostalgic journey. Loved the collection of vintage games. A bit crowded though.",
+        "visitId": 8899001122
+    },
+    {
+        "id": 8,
+        "title": "Educational and Fun",
+        "rating": 5,
+        "comment": "The museum was both educational and fun. The history of video games was well presented and the hands-on exhibits were a blast.",
+        "visitId": 9900112233
+    },
+    {
+        "id": 9,
+        "title": "Good for a Rainy Day",
+        "rating": 3,
+        "comment": "The Video Game Museum is a good place to spend a rainy day. The exhibits are interesting, but some of the games were out of order.",
+        "visitId": 1100223344
+    },
+    {
+        "id": 10,
+        "title": "A Gamer's Paradise",
+        "rating": 5,
+        "comment": "A gamer's paradise! The Video Game Museum has an extensive collection of games from all eras. The staff was friendly and helpful.",
+        "visitId": 2200334455
+    }
+]
