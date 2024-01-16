@@ -2,16 +2,33 @@ package be.dbproject.controllers
 
 import be.dbproject.ProjectMain
 import be.dbproject.models.database.*
+import be.dbproject.repositories.MuseumInformationRepository
+import be.dbproject.repositories.Repository
 import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
 import javafx.scene.Scene
 import javafx.scene.control.Button
+import javafx.scene.control.ComboBox
+import javafx.scene.control.Label
 import javafx.stage.Modality
 import javafx.stage.Stage
+import java.time.LocalDate
 import kotlin.reflect.KClass
 
 class MainController {
+
+    @FXML
+    lateinit var labelVisitorAmount: Label
+
+    @FXML
+    lateinit var labelDonationRevenue: Label
+
+    @FXML
+    lateinit var comboxYear: ComboBox<Any>
+
+    @FXML
+    lateinit var comboxMuseumName: ComboBox<Any>
 
     @FXML
     private lateinit var btnItemDetails: Button
@@ -51,6 +68,47 @@ class MainController {
         btnManageItemType.setOnAction { openTableView(ItemType::class) }
         btnVisitorLogDetails.setOnAction { openTableView(VisitorLog::class) }
         btnReviewDetails.setOnAction { openReviewsView()}
+
+        museumInsights()
+    }
+
+    private fun museumInsights() {
+        val locations = Repository(Location::class).getEntitiesByColumn(
+            listOf("locationType", "name"),
+            listOf(LocationType::class, String::class),
+            "Museum",
+            Repository.QueryType.EQUAL
+        )
+
+        val years = buildList {
+
+            for (i in 0..10){
+                this.add( LocalDate.now().year - i )
+            }
+        }
+
+        comboxMuseumName.apply {
+            items.clear()
+            items.addAll(locations)
+            valueProperty().addListener { _, _, _ -> setInsightLabels() }
+        }
+
+        comboxYear.apply {
+            items.clear()
+            items.addAll(years)
+            valueProperty().addListener { _, _, _ -> setInsightLabels() }
+        }
+    }
+
+    private fun setInsightLabels() {
+        val location = comboxMuseumName.selectionModel.selectedItem as Location?
+        val year = comboxYear.selectionModel.selectedItem as Int?
+
+        if (year == null || location == null)
+            return
+
+        labelDonationRevenue.text = MuseumInformationRepository().getMuseumDonationAmountForYear(year, location.locationName).toString()
+        labelVisitorAmount.text = MuseumInformationRepository().getMuseumVisitorAmountForYear(year, location.locationName).toString()
     }
 
     private fun <T : DatabaseModel> openTableView(entityType: KClass<T>) {
@@ -67,6 +125,10 @@ class MainController {
             stage.initOwner(ProjectMain.rootStage)
             stage.initModality(Modality.WINDOW_MODAL)
             stage.show()
+
+            stage.setOnCloseRequest {
+                museumInsights()
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -1,10 +1,9 @@
 package be.dbproject.controllers
 
-import be.dbproject.models.DataBaseModels.Review
+import be.dbproject.models.database.Review
 import be.dbproject.repositories.DocumentStore
 import javafx.beans.property.ReadOnlyObjectWrapper
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
 import javafx.scene.control.Alert
 import javafx.scene.control.SelectionMode
 import javafx.scene.control.TableColumn

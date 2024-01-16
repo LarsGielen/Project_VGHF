@@ -66,7 +66,7 @@ class Repository<T : DatabaseModel>(private val entityClass: KClass<T>) {
         }
 
         val predicate = createPredicate(queryType, path, columNames.last(), columnTypes.last(), searchParam)
-        query.select(root).where(predicate)
+        predicate?.let { query.select(root).where(it) } ?: return getAllEntities()
 
         return entityManager.createQuery(query).resultList
     }
@@ -81,7 +81,7 @@ class Repository<T : DatabaseModel>(private val entityClass: KClass<T>) {
         columnName : String,
         columnType : KClass<*>,
         searchParam: String
-    ) : Predicate {
+    ) : Predicate? {
         return when (queryType) {
             QueryType.LIKE ->
                 createPredicateLike(columnName, searchParam, path, columnType)
@@ -95,8 +95,19 @@ class Repository<T : DatabaseModel>(private val entityClass: KClass<T>) {
             QueryType.LESS_THAN ->
                 createPredicateLessThen(columnName, searchParam, path, columnType)
 
-            QueryType.RANGE ->
-                throw NotImplementedError()
+            QueryType.RANGE -> {
+                val searchParamArray = searchParam.split("|")
+                if (searchParamArray.size != 2)
+                    return null
+
+                if (searchParamArray[0].isNullOrEmpty() || searchParamArray[1].isNullOrEmpty())
+                    return null
+
+                val predicateLessThan = createPredicateLessThen(columnName, searchParamArray[1], path, columnType)
+                val predicateGreaterThan = createPredicateGreaterThen(columnName, searchParamArray[0], path, columnType)
+
+                return entityManager.criteriaBuilder.and(predicateLessThan, predicateGreaterThan);
+            }
         }
     }
 

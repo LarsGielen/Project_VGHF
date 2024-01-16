@@ -1,4 +1,4 @@
-package be.dbproject.models.DataBaseModels
+package be.dbproject.models.database
 
 data class Review(
     val _id : String,

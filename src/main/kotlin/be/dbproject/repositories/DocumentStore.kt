@@ -1,11 +1,11 @@
 package be.dbproject.repositories
 
-import be.dbproject.models.DataBaseModels.Review
+import be.dbproject.models.database.Review
 import org.lightcouch.CouchDbClient
 
 
 class DocumentStore {
-    var dbClient: CouchDbClient = CouchDbClient()
+    private var dbClient: CouchDbClient = CouchDbClient()
     fun getReviewById(reviewId: String): Review? {
         val review = dbClient.find(Review::class.java, reviewId)
         dbClient.shutdown()

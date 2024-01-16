@@ -43,6 +43,8 @@ class DatabaseModelTableView<T : DatabaseModel>(private val entityClass: KClass<
         updateTable(Repository(entityClass).getAllEntities())
     }
 
+
+
     private fun initFilterBox() {
         searchBar = DatabaseSearchBar(entityClass).apply {
             prefWidthProperty().bind(filterBox.widthProperty())

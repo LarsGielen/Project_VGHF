@@ -116,13 +116,25 @@ class DatabaseSearchBar<T : DatabaseModel>(private val startClass : KClass<T>) :
                     listOf(Repository.QueryType.LIKE, Repository.QueryType.EQUAL)
 
                 Int::class ->
-                    listOf(Repository.QueryType.EQUAL, Repository.QueryType.LESS_THAN, Repository.QueryType.GREATER_THAN)
+                    listOf(Repository.QueryType.EQUAL,
+                        Repository.QueryType.LESS_THAN,
+                        Repository.QueryType.GREATER_THAN,
+                        Repository.QueryType.RANGE
+                    )
 
                 Double::class ->
-                    listOf(Repository.QueryType.EQUAL, Repository.QueryType.LESS_THAN, Repository.QueryType.GREATER_THAN)
+                    listOf(Repository.QueryType.EQUAL,
+                        Repository.QueryType.LESS_THAN,
+                        Repository.QueryType.GREATER_THAN,
+                        Repository.QueryType.RANGE
+                    )
 
                 LocalDate::class ->
-                    listOf(Repository.QueryType.EQUAL, Repository.QueryType.LESS_THAN, Repository.QueryType.GREATER_THAN)
+                    listOf(Repository.QueryType.EQUAL,
+                        Repository.QueryType.LESS_THAN,
+                        Repository.QueryType.GREATER_THAN,
+                        Repository.QueryType.RANGE
+                    )
 
                 else -> throw IllegalArgumentException("Unsupported class: ${kClass.simpleName}")
             }
