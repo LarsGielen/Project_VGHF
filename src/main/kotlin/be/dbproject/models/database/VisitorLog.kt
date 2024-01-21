@@ -21,6 +21,12 @@ data class VisitorLog(
     var donation: Double
 ) : DatabaseModel()
 {
+    constructor() : this (
+        Visitor(),
+        Location(),
+        LocalDate.now(),
+        0.0,
+    )
     override fun toString(): String {
         return "$visitor - $location"
     }
