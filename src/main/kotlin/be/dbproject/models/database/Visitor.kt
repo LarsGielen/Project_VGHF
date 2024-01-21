@@ -22,6 +22,14 @@ data class Visitor(
     var location: Location,
 ) : DatabaseModel()
 {
+    constructor() : this (
+        "",
+        "",
+        "",
+        "",
+        Location()
+    )
+
     override fun toString(): String {
         return "$firstName $lastName"
     }

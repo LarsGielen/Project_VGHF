@@ -17,6 +17,12 @@ data class Publisher(
     var website: String?
 ) : DatabaseModel()
 {
+    constructor() : this (
+        "",
+        "",
+        ""
+    )
+
     override fun toString(): String {
         return name
     }
